@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comma — Release Notes</title>
+    <meta name="description" content="Comma release notes and changelog. Voice as a Keyboard for macOS.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="app-icon.png" type="image/png">
+    <style>
+        /* ─── Release Page Overrides ─── */
+        .release-page { padding-top: calc(var(--grid) * 14); }
+
+        .release-header {
+            padding: calc(var(--grid) * 10) 0 calc(var(--grid) * 6);
+            border-bottom: 1px solid var(--gray-dim);
+        }
+        .release-header .label { margin-bottom: calc(var(--grid) * 2); }
+
+        .release-entry {
+            padding: calc(var(--grid) * 8) 0;
+            border-bottom: 1px solid var(--gray-dim);
+        }
+        .release-entry:last-child { border-bottom: none; }
+
+        .release-meta {
+            display: flex; align-items: center; gap: calc(var(--grid) * 2);
+            margin-bottom: calc(var(--grid) * 4); flex-wrap: wrap;
+        }
+        .release-version {
+            font-family: var(--font-mono); font-size: 1.5rem; font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .release-badge {
+            font-family: var(--font-mono); font-size: 0.65rem; font-weight: 500;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding: 3px 10px; border: 1px solid rgba(255,255,255,0.25);
+            color: var(--gray-text);
+        }
+        .release-date {
+            font-family: var(--font-mono); font-size: 0.75rem;
+            color: var(--gray-mid); margin-left: auto;
+        }
+
+        .release-summary {
+            font-family: var(--font-sans); font-size: 1.125rem; line-height: 1.6;
+            color: var(--gray-text); margin-bottom: calc(var(--grid) * 5);
+            max-width: 640px;
+        }
+
+        .release-section { margin-bottom: calc(var(--grid) * 5); }
+        .release-section-title {
+            font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--gray-text);
+            padding-bottom: calc(var(--grid) * 1.5);
+            border-bottom: 1px solid var(--gray-dim);
+            margin-bottom: calc(var(--grid) * 3);
+        }
+
+        .release-list { list-style: none; display: flex; flex-direction: column; gap: calc(var(--grid) * 2); }
+        .release-list li {
+            display: flex; align-items: flex-start; gap: 12px;
+            font-family: var(--font-sans); font-size: 0.9rem; line-height: 1.6;
+            color: var(--gray-text);
+        }
+        .release-list li .icon {
+            font-size: 0.8rem; flex-shrink: 0; margin-top: 3px;
+        }
+        .release-list li strong { color: var(--white); font-weight: 500; }
+
+        .release-shortcuts {
+            display: grid; grid-template-columns: auto 1fr; gap: 8px 20px;
+            font-family: var(--font-mono); font-size: 0.8rem;
+        }
+        .release-shortcuts dt { color: var(--white); font-weight: 500; }
+        .release-shortcuts dd { color: var(--gray-text); margin: 0; }
+
+        .release-note-box {
+            border: 1px solid var(--gray-dim); padding: calc(var(--grid) * 3);
+            margin-top: calc(var(--grid) * 4);
+        }
+        .release-note-box p {
+            font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7;
+            color: var(--gray-text);
+        }
+        .release-note-box .note-title {
+            font-weight: 500; color: var(--white); margin-bottom: calc(var(--grid) * 1);
+        }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--font-mono); font-size: 0.75rem;
+            color: var(--gray-text); border-bottom: none;
+            transition: color var(--dur);
+        }
+        .back-link:hover { color: var(--white); opacity: 1; }
+    </style>
+</head>
+
+<body data-lang="en">
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <img src="app-icon.png" alt="Comma" class="brand-icon">
+                <span>Comma</span>
+            </a>
+            <div class="links">
+                <a href="release.html" style="color:var(--white);opacity:0.9;"><span data-i18n="nav_release">Release</span></a>
+                <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+                    <span class="lang-label" data-lang="en">中文</span>
+                    <span class="lang-label" data-lang="zh" style="display:none;">EN</span>
+                </button>
+                <a href="index.html#install" class="btn btn-filled"><span data-i18n="nav_download">Download</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="release-page">
+        <div class="container">
+
+            <!-- Header -->
+            <div class="release-header">
+                <a href="index.html" class="back-link">← <span data-i18n="back_home">Back to Home</span></a>
+                <h1 class="mt-4" data-i18n="release_title">Release Notes</h1>
+                <p class="subtitle mt-2" data-i18n="release_desc">What's new in Comma.</p>
+            </div>
+
+            <!-- v0.0.1 -->
+            <div class="release-entry">
+                <div class="release-meta">
+                    <span class="release-version">v0.0.1</span>
+                    <span class="release-badge" data-i18n="badge_alpha">Internal Beta</span>
+                    <span class="release-date">March 17, 2026</span>
+                </div>
+
+                <p class="release-summary" data-i18n="v001_summary">
+                    The first internal beta of Comma — a macOS-native voice input tool. Press one key, start speaking, and your words appear as text in any app.
+                </p>
+
+                <!-- Core Features -->
+                <div class="release-section">
+                    <h3 class="release-section-title" data-i18n="section_features">✨ Core Features</h3>
+                    <ul class="release-list">
+                        <li><span class="icon">🎤</span> <span data-i18n="feat_1"><strong>Voice Dictation</strong> — Press fn to start, press fn again to stop. Text appears instantly in any app.</span></li>
+                        <li><span class="icon">🌐</span> <span data-i18n="feat_2"><strong>Real-time Translation</strong> — fn + Shift: speak Chinese, get English text. Or vice versa.</span></li>
+                        <li><span class="icon">✨</span> <span data-i18n="feat_3"><strong>AI Polish</strong> — Auto-corrects punctuation, removes filler words, fixes formatting.</span></li>
+                        <li><span class="icon">📖</span> <span data-i18n="feat_4"><strong>Custom Dictionary</strong> — Add names, brands & technical terms so ASR never mishears them.</span></li>
+                        <li><span class="icon">📊</span> <span data-i18n="feat_5"><strong>Usage Dashboard</strong> — Track words dictated, time saved, and accuracy trends.</span></li>
+                        <li><span class="icon">🔒</span> <span data-i18n="feat_6"><strong>Privacy First</strong> — All data stays on your Mac. No cloud upload unless you choose to.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Keyboard Shortcuts -->
+                <div class="release-section">
+                    <h3 class="release-section-title" data-i18n="section_shortcuts">⌨️ Keyboard Shortcuts</h3>
+                    <dl class="release-shortcuts">
+                        <dt>fn</dt>
+                        <dd data-i18n="sc_1">Dictate (toggle)</dd>
+                        <dt data-i18n="sc_hold">Hold fn</dt>
+                        <dd data-i18n="sc_2">Push-to-Talk</dd>
+                        <dt>fn + Shift</dt>
+                        <dd data-i18n="sc_3">Translate</dd>
+                        <dt>fn + Space</dt>
+                        <dd data-i18n="sc_4">Ask AI</dd>
+                    </dl>
+                </div>
+
+                <!-- Architecture -->
+                <div class="release-section">
+                    <h3 class="release-section-title" data-i18n="section_arch">🏗 Under the Hood</h3>
+                    <ul class="release-list">
+                        <li><span class="icon">◆</span> <span data-i18n="arch_1"><strong>macOS-native</strong> — Built entirely in Swift, designed for macOS 14 Sonoma+.</span></li>
+                        <li><span class="icon">◆</span> <span data-i18n="arch_2"><strong>ASRProvider protocol</strong> — Swap between on-device (Apple SFSpeechRecognizer) and cloud ASR.</span></li>
+                        <li><span class="icon">◆</span> <span data-i18n="arch_3"><strong>Text Injection</strong> — Via Accessibility API, with clipboard fallback for Electron apps.</span></li>
+                        <li><span class="icon">◆</span> <span data-i18n="arch_4"><strong>Toggle + Hold</strong> — 400ms threshold auto-detects your intent.</span></li>
+                        <li><span class="icon">◆</span> <span data-i18n="arch_5"><strong>Privacy by design</strong> — All data stored locally via SwiftData.</span></li>
+                        <li><span class="icon">◆</span> <span data-i18n="arch_6"><strong>174 tests, 25 suites</strong> — TDD-driven development from day one.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Install -->
+                <div class="release-section">
+                    <h3 class="release-section-title" data-i18n="section_install">📦 Install</h3>
+                    <ul class="release-list">
+                        <li><span class="icon">1.</span> <span data-i18n="inst_1">Download the .dmg from the internal distribution channel.</span></li>
+                        <li><span class="icon">2.</span> <span data-i18n="inst_2">Drag <strong>Comma.app</strong> into your Applications folder.</span></li>
+                        <li><span class="icon">3.</span> <span data-i18n="inst_3">Launch Comma — the onboarding guide will walk you through permissions and setup.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Known Limitations -->
+                <div class="release-note-box">
+                    <p class="note-title" data-i18n="note_title">⚠️ Known Limitations (v0.0.1)</p>
+                    <p data-i18n="note_body">This is an internal-only beta. Some features may be incomplete or rough around the edges. Please report any issues to the team. Your feedback helps shape what Comma becomes.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">Comma</a>
+                <a href="release.html"><span data-i18n="nav_release">Release</span></a>
+            </div>
+            <p class="copyright">© 2026 Scientific Typing™. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const i18n = {
+            en: {
+                nav_release: 'Release',
+                nav_download: 'Download',
+                back_home: 'Back to Home',
+                release_title: 'Release Notes',
+                release_desc: "What's new in Comma.",
+                badge_alpha: 'Internal Beta',
+                v001_summary: 'The first internal beta of Comma — a macOS-native voice input tool. Press one key, start speaking, and your words appear as text in any app.',
+                section_features: '✨ Core Features',
+                feat_1: '<strong>Voice Dictation</strong> — Press fn to start, press fn again to stop. Text appears instantly in any app.',
+                feat_2: '<strong>Real-time Translation</strong> — fn + Shift: speak Chinese, get English text. Or vice versa.',
+                feat_3: '<strong>AI Polish</strong> — Auto-corrects punctuation, removes filler words, fixes formatting.',
+                feat_4: '<strong>Custom Dictionary</strong> — Add names, brands & technical terms so ASR never mishears them.',
+                feat_5: '<strong>Usage Dashboard</strong> — Track words dictated, time saved, and accuracy trends.',
+                feat_6: '<strong>Privacy First</strong> — All data stays on your Mac. No cloud upload unless you choose to.',
+                section_shortcuts: '⌨️ Keyboard Shortcuts',
+                sc_1: 'Dictate (toggle)',
+                sc_hold: 'Hold fn',
+                sc_2: 'Push-to-Talk',
+                sc_3: 'Translate',
+                sc_4: 'Ask AI',
+                section_arch: '🏗 Under the Hood',
+                arch_1: '<strong>macOS-native</strong> — Built entirely in Swift, designed for macOS 14 Sonoma+.',
+                arch_2: '<strong>ASRProvider protocol</strong> — Swap between on-device (Apple SFSpeechRecognizer) and cloud ASR.',
+                arch_3: '<strong>Text Injection</strong> — Via Accessibility API, with clipboard fallback for Electron apps.',
+                arch_4: '<strong>Toggle + Hold</strong> — 400ms threshold auto-detects your intent.',
+                arch_5: '<strong>Privacy by design</strong> — All data stored locally via SwiftData.',
+                arch_6: '<strong>174 tests, 25 suites</strong> — TDD-driven development from day one.',
+                section_install: '📦 Install',
+                inst_1: 'Download the .dmg from the internal distribution channel.',
+                inst_2: 'Drag <strong>Comma.app</strong> into your Applications folder.',
+                inst_3: 'Launch Comma — the onboarding guide will walk you through permissions and setup.',
+                note_title: '⚠️ Known Limitations (v0.0.1)',
+                note_body: 'This is an internal-only beta. Some features may be incomplete or rough around the edges. Please report any issues to the team. Your feedback helps shape what Comma becomes.',
+            },
+            zh: {
+                nav_release: '版本动态',
+                nav_download: '下载',
+                back_home: '返回首页',
+                release_title: '版本动态',
+                release_desc: 'Comma 的最新更新。',
+                badge_alpha: '内部测试',
+                v001_summary: 'Comma 首个内部测试版 — 一款 macOS 原生语音输入工具。按一个键，开始说话，文字直接出现在你正在使用的任何应用中。',
+                section_features: '✨ 核心功能',
+                feat_1: '<strong>语音输入</strong> — 按 fn 开始，再按 fn 结束。文字即时出现在任何应用中。',
+                feat_2: '<strong>实时翻译</strong> — fn + Shift：说中文出英文，反之亦然。',
+                feat_3: '<strong>AI 润色</strong> — 自动纠正标点、去除口头语、优化格式。',
+                feat_4: '<strong>自定义词典</strong> — 添加人名、品牌名和专业术语，语音识别不再出错。',
+                feat_5: '<strong>使用仪表板</strong> — 追踪输入字数、节省时间和准确率趋势。',
+                feat_6: '<strong>隐私优先</strong> — 所有数据存在本地 Mac 上，不会上传到云端。',
+                section_shortcuts: '⌨️ 快捷键',
+                sc_1: '语音输入（切换）',
+                sc_hold: '长按 fn',
+                sc_2: '按住说话',
+                sc_3: '翻译模式',
+                sc_4: 'AI 问答',
+                section_arch: '🏗 技术架构',
+                arch_1: '<strong>macOS 原生</strong> — 全 Swift 开发，专为 macOS 14 Sonoma+ 设计。',
+                arch_2: '<strong>ASRProvider 协议</strong> — 可在本地（Apple SFSpeechRecognizer）和云端 ASR 间切换。',
+                arch_3: '<strong>文本注入</strong> — 通过辅助功能 API 实现，Electron 应用使用剪贴板兜底。',
+                arch_4: '<strong>切换 + 长按</strong> — 400ms 阈值自动检测你的操作意图。',
+                arch_5: '<strong>隐私优先</strong> — 所有数据通过 SwiftData 存储在本地。',
+                arch_6: '<strong>174 个测试，25 个测试套件</strong> — 从第一天起采用 TDD 开发。',
+                section_install: '📦 安装',
+                inst_1: '从内部分发渠道下载 .dmg 安装包。',
+                inst_2: '将 <strong>Comma.app</strong> 拖入「应用程序」文件夹。',
+                inst_3: '启动 Comma — 引导程序会带你完成权限设置。',
+                note_title: '⚠️ 已知限制（v0.0.1）',
+                note_body: '这是内部测试版，部分功能可能尚未完善。请向团队反馈你遇到的任何问题，你的反馈将帮助塑造 Comma 的未来。',
+            }
+        };
+
+        let currentLang = 'en';
+        function setLang(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    if (i18n[lang][key].includes('<strong>')) {
+                        el.innerHTML = i18n[lang][key];
+                    } else {
+                        el.textContent = i18n[lang][key];
+                    }
+                }
+            });
+            document.querySelectorAll('.lang-label').forEach(el => {
+                el.style.display = el.getAttribute('data-lang') === lang ? 'inline' : 'none';
+            });
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+        document.getElementById('langToggle').addEventListener('click', () => setLang(currentLang === 'en' ? 'zh' : 'en'));
+    </script>
+
+</body>
+</html>
