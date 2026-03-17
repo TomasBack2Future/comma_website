@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>comma,01 — Touch to speak. Release to type.</title>
+    <meta name="description"
+        content="comma,01 — The first device dedicated to Scientific Typing™. Touch to speak. Release to type.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ─── Comma Page Specific ─── */
+        .comma-hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comma-hero .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 20%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .comma-hero h1 {
+            font-size: clamp(3rem, 7vw, 5rem);
+        }
+
+        .comma-hero h1 .comma-prefix {
+            font-family: var(--font-sans);
+            font-weight: 300;
+            color: var(--gray-text);
+        }
+
+        /* ─── Interactive Demo Area ─── */
+        .demo-area {
+            max-width: 560px;
+            margin: calc(var(--grid) * 8) auto 0;
+            text-align: center;
+        }
+
+        .demo-device {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px solid var(--gray-dim);
+            margin: 0 auto calc(var(--grid) * 4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            transition: border-color 0.15s, transform 0.15s, box-shadow 0.3s;
+        }
+
+        .demo-device:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .demo-device.touching {
+            border-color: var(--white);
+            transform: scale(0.96);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 40px rgba(255, 255, 255, 0.06);
+        }
+
+        .demo-device.pressing {
+            border-color: var(--white);
+            transform: scale(0.92);
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 0 60px rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-device .device-inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--gray-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--gray-mid);
+            transition: all 0.15s;
+        }
+
+        .demo-device.touching .device-inner {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .demo-device.pressing .device-inner {
+            border-color: var(--white);
+            color: var(--black);
+            background: var(--white);
+        }
+
+        /* Pulse rings for demo device */
+        .demo-device .demo-ring {
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .demo-device.touching .demo-ring {
+            animation: demo-pulse 1.5s ease-out infinite;
+        }
+
+        .demo-device.touching .demo-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes demo-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Status LED */
+        .demo-led {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-dim);
+            margin: 0 auto calc(var(--grid) * 2);
+            transition: all 0.2s;
+        }
+
+        .demo-led.on {
+            background: var(--white);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-status {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            height: 20px;
+            transition: color 0.2s;
+        }
+
+        .demo-status.active {
+            color: var(--white);
+        }
+
+        .demo-hint {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--gray-mid);
+            margin-top: calc(var(--grid) * 3);
+            letter-spacing: 0.05em;
+        }
+
+        /* ─── Waveform Visualizer ─── */
+        .waveform {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 32px;
+            margin-top: calc(var(--grid) * 3);
+        }
+
+        .waveform .bar {
+            width: 2px;
+            background: var(--gray-dim);
+            border-radius: 1px;
+            transition: height 0.1s ease, background 0.2s;
+            height: 4px;
+        }
+
+        .waveform.active .bar {
+            background: var(--white);
+            animation: waveform-bar 0.6s ease-in-out infinite alternate;
+        }
+
+        .waveform.active .bar:nth-child(1) {
+            animation-delay: 0.0s;
+        }
+
+        .waveform.active .bar:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+
+        .waveform.active .bar:nth-child(3) {
+            animation-delay: 0.16s;
+        }
+
+        .waveform.active .bar:nth-child(4) {
+            animation-delay: 0.24s;
+        }
+
+        .waveform.active .bar:nth-child(5) {
+            animation-delay: 0.32s;
+        }
+
+        .waveform.active .bar:nth-child(6) {
+            animation-delay: 0.40s;
+        }
+
+        .waveform.active .bar:nth-child(7) {
+            animation-delay: 0.48s;
+        }
+
+        .waveform.active .bar:nth-child(8) {
+            animation-delay: 0.56s;
+        }
+
+        .waveform.active .bar:nth-child(9) {
+            animation-delay: 0.64s;
+        }
+
+        .waveform.active .bar:nth-child(10) {
+            animation-delay: 0.72s;
+        }
+
+        .waveform.active .bar:nth-child(11) {
+            animation-delay: 0.8s;
+        }
+
+        .waveform.active .bar:nth-child(12) {
+            animation-delay: 0.88s;
+        }
+
+        .waveform.active .bar:nth-child(13) {
+            animation-delay: 0.96s;
+        }
+
+        .waveform.active .bar:nth-child(14) {
+            animation-delay: 1.04s;
+        }
+
+        .waveform.active .bar:nth-child(15) {
+            animation-delay: 1.12s;
+        }
+
+        .waveform.active .bar:nth-child(16) {
+            animation-delay: 1.2s;
+        }
+
+        @keyframes waveform-bar {
+            0% {
+                height: 4px;
+            }
+
+            50% {
+                height: 28px;
+            }
+
+            100% {
+                height: 8px;
+            }
+        }
+
+        /* ─── Typed Output ─── */
+        .typed-output {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--gray-mid);
+            min-height: 1.5em;
+            margin-top: calc(var(--grid) * 2);
+            padding: calc(var(--grid) * 1.5) calc(var(--grid) * 2);
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .typed-output.has-text {
+            border-color: var(--gray-dim);
+            color: var(--white);
+        }
+
+        /* ─── Layer Diagram / Exploded View ─── */
+        .exploded-view-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: calc(var(--grid) * 6) auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 500px;
+            perspective: 1000px;
+        }
+
+        .exploded-svg {
+            width: 350px;
+            height: 100%;
+            overflow: visible;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        .exp-layer {
+            transition: filter 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(calc(var(--ty) * var(--explode-progress, 0))) scale(calc(0.95 + 0.05 * var(--explode-progress, 0)));
+            transform-origin: 200px 420px;
+            cursor: pointer;
+        }
+
+        /* Continuous floating effect applied when fully exploded */
+        .exploded-view-container.fully-exploded .exp-layer {
+            animation: layer-float 4s ease-in-out infinite alternate;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="1"] {
+            animation-delay: -0.2s;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="2"] {
+            animation-delay: -0.4s;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="3"] {
+            animation-delay: -0.6s;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="4"] {
+            animation-delay: -0.8s;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="5"] {
+            animation-delay: -1.0s;
+        }
+
+        .exploded-view-container.fully-exploded .exp-layer[data-layer="6"] {
+            animation-delay: -1.2s;
+        }
+
+        @keyframes layer-float {
+            0% {
+                transform: translateY(calc(var(--ty) * var(--explode-progress, 0))) scale(calc(0.95 + 0.05 * var(--explode-progress, 0)));
+            }
+
+            100% {
+                transform: translateY(calc((var(--ty) * var(--explode-progress, 0)) - 6px)) scale(calc(0.95 + 0.05 * var(--explode-progress, 0)));
+            }
+        }
+
+        .exp-layer:hover {
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.5);
+        }
+
+        .exp-center-line {
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+            transition: stroke-width 0.3s;
+        }
+
+        .exp-labels-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 350px;
+            margin-top: -100px;
+            width: 50%;
+        }
+
+        .exp-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            padding: calc(var(--grid)) 0;
+            border-bottom: 1px solid var(--gray-dim);
+            transition: color 0.3s, border-color 0.3s;
+            opacity: var(--explode-progress, 0);
+            transform: translateX(calc((1 - var(--explode-progress, 0)) * 20px));
+            cursor: pointer;
+        }
+
+        .exp-label.highlight {
+            color: var(--white);
+            border-color: var(--white);
+            transform: translateX(calc((1 - var(--explode-progress, 0)) * 20px - 5px)) scale(1.02);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .exploded-view-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .exp-labels-col {
+                margin-top: 40px;
+                height: auto;
+                gap: 16px;
+                width: 100%;
+            }
+        }
+
+        /* ─── Engineering Sticky Scroll ─── */
+        .eng-scroll-track {
+            height: 250vh;
+            position: relative;
+        }
+
+        .eng-sticky-content {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .eng-sticky-content .container {
+            width: 100%;
+        }
+
+        .engineering-stats {
+            margin-top: calc(var(--grid) * 4);
+        }
+
+        /* ─── Magnetic Modes Animation ─── */
+        .magnetic-demo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1px solid var(--gray-dim);
+            margin: 0 auto;
+            position: relative;
+            margin-bottom: calc(var(--grid) * 3);
+        }
+
+        .magnetic-demo .mag-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--white);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s var(--ease-spring);
+        }
+
+        .wear-card:hover .mag-dot {
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+        }
+
+        .wear-card:nth-child(1):hover .mag-dot {
+            transform: translate(-50%, -180%);
+        }
+
+        .wear-card:nth-child(2):hover .mag-dot {
+            transform: translate(-180%, -50%);
+        }
+
+        .wear-card:nth-child(3):hover .mag-dot {
+            transform: translate(80%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Section Nav Dots -->
+    <div class="section-nav" id="sectionNav">
+        <div class="dot active" data-target="comma-hero" data-label="Top"></div>
+        <div class="dot" data-target="philosophy" data-label="Philosophy"></div>
+        <div class="dot" data-target="interaction" data-label="Interaction"></div>
+        <div class="dot" data-target="engineering" data-label="Engineering"></div>
+        <div class="dot" data-target="wear" data-label="Wear"></div>
+        <div class="dot" data-target="specs" data-label="Specs"></div>
+        <div class="dot" data-target="comma-waitlist" data-label="Waitlist"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <span class="comma-mark">,</span>
+                Scientific Typing™
+            </a>
+            <div class="links">
+                <a href="comma.html">comma,01</a>
+                <a href="#comma-waitlist" class="btn btn-filled"><span>Join Waitlist</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="spacer-nav"></div>
+
+    <!-- ═══ COMMA HERO ═══ -->
+    <section class="comma-hero" id="comma-hero">
+        <div class="hero-bg-grid"></div>
+        <div class="container" style="position:relative; z-index:1;">
+            <p class="label reveal">The First Device</p>
+            <h1 class="mt-3 reveal" style="transition-delay:0.1s;">
+                <span class="comma-prefix">comma,</span>01
+            </h1>
+            <p class="subtitle mt-3 reveal" style="transition-delay:0.3s;">Touch to speak. Release to type.</p>
+        </div>
+    </section>
+
+    <!-- ═══ PHILOSOPHY ═══ -->
+    <section id="philosophy">
+        <div class="container">
+            <p class="label reveal">Philosophy</p>
+            <h2 class="mt-4 reveal">A physical anchor<br>for your voice.</h2>
+            <p class="philosophy-text reveal" style="transition-delay:0.1s;">
+                Voice input failed because it lacked a <strong>physical ritual</strong>.
+                No beginning. No end. No certainty.
+                comma,01 gives voice a body&nbsp;— <strong>touch to begin, release to commit</strong>.
+                The physical hold is the interface.
+            </p>
+        </div>
+    </section>
+
+    <!-- ═══ INTERACTION — Interactive Demo ═══ -->
+    <section id="interaction">
+        <div class="container">
+            <p class="label reveal">Interaction</p>
+            <h2 class="mt-4 reveal">One surface. Five operations.</h2>
+            <p class="subtitle reveal" style="transition-delay:0.1s;">Capacitive touch + mechanical press. No buttons to
+                find.</p>
+
+            <!-- Live Demo Device -->
+            <div class="demo-area reveal-scale" style="transition-delay:0.2s;">
+                <div class="demo-led" id="demoLed"></div>
+                <div class="demo-device" id="demoDevice">
+                    <div class="demo-ring"></div>
+                    <div class="demo-ring"></div>
+                    <div class="device-inner">,</div>
+                </div>
+                <div class="demo-status" id="demoStatus">Ready</div>
+                <div class="waveform" id="waveform">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="typed-output" id="typedOutput"></div>
+                <p class="demo-hint">Touch & hold to speak · Click for commands · Double-click to select · Triple-click
+                    to delete</p>
+            </div>
+
+            <!-- Operation Cards -->
+            <div class="interaction-grid mt-8">
+                <div class="interaction-card" data-action="touch" id="cardTouch">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M12 12v8" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Touch</div>
+                    <div class="card-desc">Capacitive detection. Device wakes. LED on.</div>
+                </div>
+
+                <div class="interaction-card" data-action="release" id="cardRelease">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M12 20V4M5 11l7-7 7 7" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Release</div>
+                    <div class="card-desc">Voice buffer commits. Text appears instantly.</div>
+                </div>
+
+                <div class="interaction-card" data-action="click" id="cardClick">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="6" y="6" width="12" height="12" rx="2" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Click</div>
+                    <div class="card-desc">Mechanical press. Triggers primary action.</div>
+                </div>
+
+                <div class="interaction-card" data-action="double" id="cardDouble">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="4" y="8" width="8" height="8" rx="1" />
+                            <rect x="12" y="8" width="8" height="8" rx="1" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Double Click</div>
+                    <div class="card-desc">Select last sentence. Ready for correction.</div>
+                </div>
+
+                <div class="interaction-card" data-action="triple" id="cardTriple">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <line x1="4" y1="12" x2="20" y2="12" />
+                            <line x1="4" y1="8" x2="20" y2="8" />
+                            <line x1="4" y1="16" x2="20" y2="16" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Triple Click</div>
+                    <div class="card-desc">Delete last block. Clean undo.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ ENGINEERING ═══ -->
+    <section id="engineering" class="eng-scroll-track">
+        <div class="eng-sticky-content">
+            <div class="container">
+                <p class="label reveal">Engineering</p>
+                <h2 class="mt-4 reveal">Seven layers. Zero seams.</h2>
+                <p class="subtitle reveal">Ultrasonic welding. No visible screws.</p>
+
+                <div class="exploded-view-container" id="explodedView">
+                    <svg viewBox="0 0 400 600" class="exploded-svg" preserveAspectRatio="xMidYMid meet">
+                        <!-- connecting line -->
+                        <line x1="200" y1="420" x2="200" y2="420" class="exp-center-line" />
+
+                        <g class="exp-layer" style="--ty: 0px;" data-layer="7">
+                            <path d="M 100 420 L 100 450 A 100 50 0 0 0 300 450 L 300 420 A 100 50 0 0 1 100 420 Z"
+                                fill="#111" />
+                            <ellipse cx="200" cy="420" rx="100" ry="50" fill="#000" stroke="#333" stroke-width="2" />
+                            <ellipse cx="200" cy="420" rx="90" ry="45" fill="#050505" stroke="#222" stroke-width="1" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -45px;" data-layer="6">
+                            <path d="M 115 420 L 115 435 A 85 42.5 0 0 0 285 435 L 285 420 A 85 42.5 0 0 1 115 420 Z"
+                                fill="#444" />
+                            <ellipse cx="200" cy="420" rx="85" ry="42.5" fill="#555" />
+                            <path d="M 190 420 L 210 420 M 200 410 L 200 430" stroke="#222" stroke-width="2" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -90px;" data-layer="5">
+                            <ellipse cx="200" cy="420" rx="90" ry="45" fill="#021a10" stroke="#145233"
+                                stroke-width="2" />
+                            <rect x="170" y="405" width="25" height="25" fill="#111" stroke="#DAA520" stroke-width="1"
+                                transform="skewX(-45)" />
+                            <rect x="220" y="415" width="15" height="15" fill="#111" stroke="#DAA520" stroke-width="1"
+                                transform="skewX(-45)" />
+                            <circle cx="160" cy="430" r="3" fill="#DAA520" />
+                            <circle cx="240" cy="410" r="3" fill="#DAA520" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -135px;" data-layer="4">
+                            <path d="M 160 420 L 160 432 A 40 20 0 0 0 240 432 L 240 420 A 40 20 0 0 1 160 420 Z"
+                                fill="#222" />
+                            <ellipse cx="200" cy="420" rx="40" ry="20" fill="#333" stroke="#666" stroke-width="1" />
+                            <ellipse cx="200" cy="420" rx="20" ry="10" fill="#111" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -180px;" data-layer="3">
+                            <ellipse cx="200" cy="420" rx="95" ry="47.5" fill="rgba(200, 100, 0, 0.2)"
+                                stroke="rgba(255, 150, 0, 0.8)" stroke-width="1.5" stroke-dasharray="10 5" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -225px;" data-layer="2">
+                            <ellipse cx="200" cy="420" rx="98" ry="49" fill="rgba(0, 50, 100, 0.4)"
+                                stroke="rgba(0, 200, 255, 0.6)" stroke-width="1" />
+                            <path d="M 120 420 Q 200 390 280 420 M 130 430 Q 200 400 270 430"
+                                stroke="rgba(0, 200, 255, 0.3)" stroke-width="1" fill="none" />
+                            <path d="M 160 390 Q 180 420 160 450 M 240 390 Q 220 420 240 450"
+                                stroke="rgba(0, 200, 255, 0.3)" stroke-width="1" fill="none" />
+                        </g>
+
+                        <g class="exp-layer" style="--ty: -270px;" data-layer="1">
+                            <path d="M 100 420 L 100 428 A 100 50 0 0 0 300 428 L 300 420 A 100 50 0 0 1 100 420 Z"
+                                fill="rgba(255, 255, 255, 0.15)" />
+                            <ellipse cx="200" cy="420" rx="100" ry="50" fill="rgba(255, 255, 255, 0.05)"
+                                stroke="rgba(255, 255, 255, 0.8)" stroke-width="1.5" />
+                            <ellipse cx="200" cy="420" rx="60" ry="30" fill="transparent"
+                                stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" />
+                            <path d="M 120 410 Q 200 380 280 410" fill="none" stroke="rgba(255, 255, 255, 0.8)"
+                                stroke-width="2" stroke-linecap="round" />
+                        </g>
+                    </svg>
+
+                    <div class="exp-labels-col">
+                        <div class="exp-label" data-target="1">01 — Sapphire Touch Surface</div>
+                        <div class="exp-label" data-target="2">02 — Capacitive Sensor Array</div>
+                        <div class="exp-label" data-target="3">03 — Force-Sensitive Membrane</div>
+                        <div class="exp-label" data-target="4">04 — Haptic Feedback Motor</div>
+                        <div class="exp-label" data-target="5">05 — BLE 5.3 Radio Module</div>
+                        <div class="exp-label" data-target="6">06 — Li-Po Cell (180 mAh)</div>
+                        <div class="exp-label" data-target="7">07 — Titanium Chassis</div>
+                    </div>
+                </div>
+
+                <div class="engineering-stats stagger reveal">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="7">0</span>
+                        <span class="stat-label">Layers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="0">0</span>
+                        <span class="stat-label">Visible Screws</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="12">0</span>
+                        <span class="stat-label">Grams</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ WEAR ═══ -->
+    <section id="wear">
+        <div class="container">
+            <p class="label reveal">Wear</p>
+            <h2 class="mt-4 reveal">Three modes. One magnet.</h2>
+            <p class="subtitle reveal">Every accessory connects through the same magnetic interface.</p>
+
+            <div class="wear-modes stagger reveal">
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Ring</div>
+                    <div class="wear-desc">Index finger. Always ready.</div>
+                </div>
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Clip</div>
+                    <div class="wear-desc">Collar mount. Discreet.</div>
+                </div>
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Desk</div>
+                    <div class="wear-desc">Charging cradle. Stationary use.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SPECIFICATIONS ═══ -->
+    <section id="specs">
+        <div class="container">
+            <p class="label reveal">Specifications</p>
+            <h2 class="mt-4 reveal">comma,01</h2>
+
+            <div class="dual-grid reveal">
+                <div class="col">
+                    <h3>Physical</h3>
+                    <table class="spec-table">
+                        <tr>
+                            <td>Dimensions</td>
+                            <td>28 × 28 × 8 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td>12 g</td>
+                        </tr>
+                        <tr>
+                            <td>Material</td>
+                            <td>Grade 5 Titanium</td>
+                        </tr>
+                        <tr>
+                            <td>Surface</td>
+                            <td>Sapphire Crystal</td>
+                        </tr>
+                        <tr>
+                            <td>Sealing</td>
+                            <td>Ultrasonic Weld</td>
+                        </tr>
+                        <tr>
+                            <td>Water Resistance</td>
+                            <td>IP67</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col">
+                    <h3>Electronics</h3>
+                    <table class="spec-table">
+                        <tr>
+                            <td>Connectivity</td>
+                            <td>BLE 5.3</td>
+                        </tr>
+                        <tr>
+                            <td>Battery</td>
+                            <td>180 mAh Li-Po</td>
+                        </tr>
+                        <tr>
+                            <td>Battery Life</td>
+                            <td>~7 days standby</td>
+                        </tr>
+                        <tr>
+                            <td>Charging</td>
+                            <td>Magnetic USB-C</td>
+                        </tr>
+                        <tr>
+                            <td>Sensors</td>
+                            <td>Capacitive + Force</td>
+                        </tr>
+                        <tr>
+                            <td>Feedback</td>
+                            <td>Linear Haptic</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-center mt-8 reveal">
+                <p class="label">Status LED</p>
+                <table class="spec-table mt-3" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <tr>
+                        <td>Solid</td>
+                        <td>Connected & ready</td>
+                    </tr>
+                    <tr>
+                        <td>Pulse</td>
+                        <td>Voice active</td>
+                    </tr>
+                    <tr>
+                        <td>Flash</td>
+                        <td>Click registered</td>
+                    </tr>
+                    <tr>
+                        <td>Off</td>
+                        <td>Standby / sleeping</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ WAITLIST ═══ -->
+    <section id="comma-waitlist">
+        <div class="container">
+            <p class="label reveal">Early Access</p>
+            <h2 class="mt-4 reveal">Be the first to hold<br>comma,01.</h2>
+            <form class="waitlist-form reveal" id="waitlistForm">
+                <input type="email" placeholder="you@email.com" required>
+                <button type="submit" class="btn btn-filled"><span>Join the Waitlist</span></button>
+            </form>
+            <p class="waitlist-success" id="waitlistSuccess">✓ You're on the list. We'll be in touch.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <span class="small">A product of</span>
+                <a href="index.html">Scientific Typing™</a>
+                <span class="small">by</span>
+                <a href="https://inputscience.io" target="_blank" rel="noopener">Input Science</a>
+            </div>
+            <p class="copyright">© 2026 Input Science. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <script>
+        // ─── Shared: Scroll Progress + Back to Top ───
+        const scrollProgress = document.getElementById('scrollProgress');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress.style.width = ((scrollTop / docHeight) * 100) + '%';
+            backToTop.classList.toggle('visible', scrollTop > 400);
+        }, { passive: true });
+
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ─── Shared: Smart Nav ───
+        let lastScroll = 0;
+        const mainNav = document.getElementById('mainNav');
+
+        window.addEventListener('scroll', () => {
+            const cur = window.scrollY;
+            mainNav.classList.toggle('hidden', cur > lastScroll && cur > 120);
+            lastScroll = cur;
+        }, { passive: true });
+
+        // ─── Shared: Section Dots ───
+        const dots = document.querySelectorAll('.section-nav .dot');
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+            dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+        }, { passive: true });
+
+        dots.forEach(d => d.addEventListener('click', () => {
+            document.getElementById(d.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
+        }));
+
+        // ─── Shared: Scroll Reveal ───
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger')
+            .forEach(el => revealObserver.observe(el));
+
+        // ═══════════════════════════════════════
+        // ═══ INTERACTIVE DEMO DEVICE ═══
+        // ═══════════════════════════════════════
+
+        const demoDevice = document.getElementById('demoDevice');
+        const demoLed = document.getElementById('demoLed');
+        const demoStatus = document.getElementById('demoStatus');
+        const waveform = document.getElementById('waveform');
+        const typedOutput = document.getElementById('typedOutput');
+
+        const samplePhrases = [
+            'Voice as a keyboard.',
+            'Touch to speak, release to type.',
+            'The physical hold is the interface.',
+            'No beginning. No end. No certainty.',
+            'comma,01 gives voice a body.',
+            'Controlled by a physical hold.',
+        ];
+
+        let holdTimer = null;
+        let clickCount = 0;
+        let clickTimer = null;
+        let isHolding = false;
+        let interactionLocked = false;
+        let currentPhrase = '';
+
+        function setStatus(text, active = false) {
+            demoStatus.textContent = text;
+            demoStatus.classList.toggle('active', active);
+        }
+
+        function setLed(on) {
+            demoLed.classList.toggle('on', on);
+        }
+
+        function typeText(text) {
+            typedOutput.textContent = '';
+            typedOutput.classList.add('has-text');
+            let i = 0;
+            function next() {
+                if (i <= text.length) {
+                    typedOutput.textContent = text.slice(0, i) + (i < text.length ? '█' : '');
+                    i++;
+                    setTimeout(next, 20 + Math.random() * 20);
+                }
+            }
+            next();
+        }
+
+        // Touch & Hold → Voice Input vs Click
+        demoDevice.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if (interactionLocked) return;
+
+            // Wait 250ms before triggering "hold" visually
+            holdTimer = setTimeout(() => {
+                isHolding = true;
+                interactionLocked = true; // Lock out clicks
+                demoDevice.classList.add('touching', 'pressing');
+                setLed(true);
+                setStatus('Listening...', true);
+                waveform.classList.add('active');
+                currentPhrase = samplePhrases[Math.floor(Math.random() * samplePhrases.length)];
+                activateCard('touch');
+
+                // If it's a hold, cancel any pending click timer
+                clickCount = 0;
+                clearTimeout(clickTimer);
+            }, 250);
+        });
+
+        demoDevice.addEventListener('mouseup', () => {
+            clearTimeout(holdTimer); // If released before 250ms, hold is cancelled
+
+            if (isHolding) {
+                // Was holding, now releasing
+                isHolding = false;
+                demoDevice.classList.remove('touching', 'pressing');
+                waveform.classList.remove('active');
+
+                setStatus('Committed', true);
+                setLed(false);
+                activateCard('release');
+                typeText(currentPhrase);
+
+                setTimeout(() => {
+                    setStatus('Ready');
+                    interactionLocked = false;
+                }, 2000);
+            } else {
+                // Released before 250ms, count as a click
+                if (!interactionLocked) {
+                    handleClick();
+                }
+            }
+        });
+
+        // Prevent context menu on long press
+        demoDevice.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Touch events for mobile
+        demoDevice.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            demoDevice.dispatchEvent(new MouseEvent('mousedown'));
+        });
+
+        demoDevice.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            demoDevice.dispatchEvent(new MouseEvent('mouseup'));
+        });
+
+        function handleClick() {
+            clickCount++;
+            clearTimeout(clickTimer);
+
+            clickTimer = setTimeout(() => {
+                if (clickCount === 1) {
+                    activateCard('click');
+                    setStatus('Click → Action', true);
+                    setLed(true);
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (clickCount === 2) {
+                    activateCard('double');
+                    setStatus('Double → Select', true);
+                    setLed(true);
+                    if (typedOutput.textContent) {
+                        typedOutput.style.background = 'rgba(255,255,255,0.08)';
+                        setTimeout(() => { typedOutput.style.background = ''; }, 1200);
+                    }
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (clickCount >= 3) {
+                    activateCard('triple');
+                    setStatus('Triple → Delete', true);
+                    setLed(true);
+                    typedOutput.textContent = '';
+                    typedOutput.classList.remove('has-text');
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                }
+                clickCount = 0;
+            }, 300);
+        }
+
+        // ─── Interaction Cards: Click to Demo ───
+        const interactionCards = document.querySelectorAll('.interaction-card');
+
+        function activateCard(action) {
+            interactionCards.forEach(c => c.classList.remove('active'));
+            const card = document.querySelector(`[data-action="${action}"]`);
+            if (card) {
+                card.classList.add('active');
+                // Ripple
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                const rect = card.getBoundingClientRect();
+                ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.marginLeft = -(Math.max(rect.width, rect.height) / 2) + 'px';
+                ripple.style.marginTop = -(Math.max(rect.width, rect.height) / 2) + 'px';
+                card.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+
+                setTimeout(() => card.classList.remove('active'), 1500);
+            }
+        }
+
+        // Cards also clickable independently
+        interactionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const action = card.dataset.action;
+                activateCard(action);
+
+                // Mirror on demo device
+                if (action === 'touch') {
+                    demoDevice.classList.add('touching');
+                    setLed(true);
+                    setStatus('Listening...', true);
+                    waveform.classList.add('active');
+                    setTimeout(() => {
+                        demoDevice.classList.remove('touching');
+                        waveform.classList.remove('active');
+                        setStatus('Committed', true);
+                        currentPhrase = samplePhrases[Math.floor(Math.random() * samplePhrases.length)];
+                        typeText(currentPhrase);
+                        activateCard('release');
+                        setLed(false);
+                        setTimeout(() => setStatus('Ready'), 2000);
+                    }, 1500);
+                } else if (action === 'click') {
+                    setStatus('Click → Action', true);
+                    setLed(true);
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (action === 'double') {
+                    setStatus('Double → Select', true);
+                    setLed(true);
+                    if (typedOutput.textContent) {
+                        typedOutput.style.background = 'rgba(255,255,255,0.08)';
+                        setTimeout(() => typedOutput.style.background = '', 1200);
+                    }
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (action === 'triple') {
+                    setStatus('Triple → Delete', true);
+                    setLed(true);
+                    typedOutput.textContent = '';
+                    typedOutput.classList.remove('has-text');
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                }
+            });
+        });
+
+        // ─── Engineering: Scroll-Scrubbing SVG ───
+        const explodeContainer = document.getElementById('explodedView');
+        if (explodeContainer) {
+            let rafId = null;
+
+            // Update scrub animation on scroll
+            function scrubExplosion() {
+                const track = document.getElementById('engineering');
+                const rect = track.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                // Track gives us 250vh. 
+                // Progress is 0 when the top of track hits the top of viewport.
+                // Progress is 1 when the bottom of track hits the bottom of viewport.
+
+                const scrollableDistance = Math.max(1, rect.height - windowHeight);
+                let rawProgress = -rect.top / scrollableDistance;
+
+                // Clamp and ease
+                let progress = Math.max(0, Math.min(1, rawProgress));
+                // Add a slight ease-out to the scrub behavior
+                progress = 1 - Math.pow(1 - progress, 2.5);
+
+                // Apply CSS variable for dynamic tying
+                explodeContainer.style.setProperty('--explode-progress', progress.toFixed(4));
+
+                // Animate center line
+                const centerLine = document.querySelector('.exp-center-line');
+                if (centerLine) {
+                    centerLine.setAttribute('y2', 420 - (420 - 150) * progress);
+                }
+
+                // Add floating keyframes ONLY when fully expanded so it feels alive
+                if (progress > 0.98) {
+                    explodeContainer.classList.add('fully-exploded');
+                } else {
+                    explodeContainer.classList.remove('fully-exploded');
+                }
+                rafId = null;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!rafId) {
+                    rafId = requestAnimationFrame(scrubExplosion);
+                }
+            }, { passive: true });
+
+            // Initial call to set correct state
+            scrubExplosion();
+
+            // Hover interactions
+            const expLayers = document.querySelectorAll('.exp-layer');
+            const expLabels = document.querySelectorAll('.exp-label');
+
+            expLayers.forEach(layer => {
+                layer.addEventListener('mouseenter', () => {
+                    const id = layer.dataset.layer;
+                    document.querySelector(`.exp-label[data-target="${id}"]`)?.classList.add('highlight');
+                });
+                layer.addEventListener('mouseleave', () => {
+                    const id = layer.dataset.layer;
+                    document.querySelector(`.exp-label[data-target="${id}"]`)?.classList.remove('highlight');
+                });
+            });
+
+            expLabels.forEach(label => {
+                label.addEventListener('mouseenter', () => {
+                    const id = label.dataset.target;
+                    document.querySelector(`.exp-layer[data-layer="${id}"]`)?.style.setProperty('filter', 'drop-shadow(0 0 20px rgba(255,255,255,0.4)) brightness(1.7)');
+                    label.classList.add('highlight');
+                });
+                label.addEventListener('mouseleave', () => {
+                    const id = label.dataset.target;
+                    document.querySelector(`.exp-layer[data-layer="${id}"]`)?.style.setProperty('filter', '');
+                    label.classList.remove('highlight');
+                });
+            });
+        }
+
+
+        // ─── Engineering: Counter Animation ───
+        const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    let current = 0;
+                    const step = Math.max(1, Math.floor(target / 30));
+                    const interval = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(interval);
+                        }
+                        el.textContent = current;
+                    }, 40);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => counterObserver.observe(el));
+
+        // ─── Waitlist Form ───
+        const waitlistForm = document.getElementById('waitlistForm');
+        const waitlistSuccess = document.getElementById('waitlistSuccess');
+
+        waitlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = waitlistForm.querySelector('input').value;
+            const entries = JSON.parse(localStorage.getItem('st_waitlist') || '[]');
+            entries.push({ email, timestamp: new Date().toISOString() });
+            localStorage.setItem('st_waitlist', JSON.stringify(entries));
+            waitlistForm.style.display = 'none';
+            waitlistSuccess.classList.add('show');
+        });
+
+        if (localStorage.getItem('st_waitlist')) {
+            const entries = JSON.parse(localStorage.getItem('st_waitlist'));
+            if (entries.length > 0) {
+                waitlistForm.style.display = 'none';
+                waitlistSuccess.classList.add('show');
+            }
+        }
+
+        // ─── Console Easter Egg ───
+        console.log(
+            '%c , %c comma,01 — Touch to speak. Release to type.',
+            'font-size: 32px; font-weight: 800; color: #fff; background: #000; padding: 8px 4px 8px 16px;',
+            'font-size: 12px; font-weight: 400; color: #888; background: #000; padding: 8px 16px 8px 0;'
+        );
+    </script>
+
+</body>
+
+</html>

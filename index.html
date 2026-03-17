@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comma — Voice as a Keyboard</title>
+    <meta name="description"
+        content="Comma is a macOS-native voice input tool. Hold, speak, done. Your words become text — in any app, any language.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="app-icon.png" type="image/png">
+</head>
+
+<body data-lang="en">
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Section Nav Dots -->
+    <div class="section-nav" id="sectionNav">
+        <div class="dot active" data-target="hero" data-label="Top"></div>
+        <div class="dot" data-target="problem" data-label="Problem"></div>
+        <div class="dot" data-target="method" data-label="Method"></div>
+        <div class="dot" data-target="features" data-label="Features"></div>
+        <div class="dot" data-target="shortcuts" data-label="Keys"></div>
+        <div class="dot" data-target="install" data-label="Install"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="container">
+            <a href="index.html" class="brand">
+                <img src="app-icon.png" alt="Comma" class="brand-icon">
+                <span>Comma</span>
+            </a>
+            <div class="links">
+                <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+                    <span class="lang-label" data-lang="en">中文</span>
+                    <span class="lang-label" data-lang="zh" style="display:none;">EN</span>
+                </button>
+                <a href="#install" class="btn btn-filled"><span data-i18n="nav_download">Download</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="spacer-nav"></div>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid"></div>
+
+        <!-- Canvas: 3D perspective warp-rush of code/text/commas -->
+        <!-- Language Matrix: Floating code, text, commas that connect everything -->
+        <svg class="hero-matrix-svg" id="heroMatrix" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></svg>
+
+        <div class="container" style="position:relative; z-index:1;">
+            <div class="hero-logo-wrap reveal">
+                <img src="app-icon.png" alt="Comma" class="hero-logo">
+                <svg class="logo-pulse" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1">
+                        <animate attributeName="r" values="50;58;50" dur="3s" repeatCount="indefinite"/>
+                        <animate attributeName="stroke-opacity" values="0.15;0.03;0.15" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="60" cy="60" r="56" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5">
+                        <animate attributeName="r" values="56;66;56" dur="4s" repeatCount="indefinite"/>
+                        <animate attributeName="stroke-opacity" values="0.08;0.01;0.08" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+
+            <p class="brand-title reveal">Scientific Typing™</p>
+            <h1 id="heroTitle">
+                <span class="hero-typed" id="heroTyped"></span><span class="cursor"></span>
+            </h1>
+            <p class="subtitle mt-3 reveal" style="transition-delay: 0.6s;">
+                <span data-i18n="hero_sub">Hold, Speak, Done</span>
+            </p>
+        </div>
+
+        <!-- Sound Wave -->
+        <div class="hero-wave-wrap">
+            <svg class="hero-wave" viewBox="0 0 1200 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+                        <stop offset="30%" stop-color="#fff" stop-opacity="0.15"/>
+                        <stop offset="50%" stop-color="#fff" stop-opacity="0.3"/>
+                        <stop offset="70%" stop-color="#fff" stop-opacity="0.15"/>
+                        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path id="wavePath1" fill="none" stroke="url(#waveGrad)" stroke-width="1.5"/>
+                <path id="wavePath2" fill="none" stroke="url(#waveGrad)" stroke-width="1" opacity="0.5"/>
+                <path id="wavePath3" fill="none" stroke="url(#waveGrad)" stroke-width="0.5" opacity="0.3"/>
+            </svg>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="line"></div>
+            <span class="label">Scroll</span>
+        </div>
+    </section>
+
+    <!-- ═══ THE PROBLEM ═══ -->
+    <section id="problem">
+        <div class="container">
+            <p class="label reveal" data-i18n="problem_label">The Problem</p>
+            <ul class="problem-list mt-6 stagger reveal">
+                <li data-i18n="problem_1">Typing breaks flow.</li>
+                <li data-i18n="problem_2">Switching apps kills momentum.</li>
+                <li data-i18n="problem_3">Copy-paste is not a workflow.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ═══ THE METHOD ═══ -->
+    <section id="method" class="text-center">
+        <div class="container">
+            <p class="label reveal" data-i18n="method_label">The Method</p>
+
+            <div class="method-visual mt-6 reveal-scale">
+                <svg class="fn-key-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="keyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+                            <stop offset="100%" stop-color="rgba(255,255,255,0.05)"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="150" y="20" width="100" height="70" rx="12" fill="url(#keyGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="1">
+                        <animate attributeName="y" values="20;25;20" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1"/>
+                        <animate attributeName="height" values="70;65;70" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1"/>
+                    </rect>
+                    <text x="200" y="62" text-anchor="middle" fill="white" font-family="'Inter',sans-serif" font-size="18" font-weight="700" letter-spacing="-0.5">
+                        fn
+                        <animate attributeName="y" values="62;65;62" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1"/>
+                    </text>
+                    <circle cx="200" cy="55" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1">
+                        <animate attributeName="r" values="45;55;45" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="stroke-opacity" values="0.1;0;0.1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <path d="M270,45 Q280,35 280,55 Q280,75 270,65" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/></path>
+                    <path d="M285,38 Q300,28 300,55 Q300,82 285,72" fill="none" stroke="white" stroke-width="1" stroke-linecap="round"><animate attributeName="opacity" values="0;0.4;0" dur="2s" repeatCount="indefinite" begin="0.3s"/></path>
+                    <path d="M300,30 Q320,20 320,55 Q320,90 300,80" fill="none" stroke="white" stroke-width="0.5" stroke-linecap="round"><animate attributeName="opacity" values="0;0.2;0" dur="2s" repeatCount="indefinite" begin="0.6s"/></path>
+                    <path d="M130,45 Q120,35 120,55 Q120,75 130,65" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><animate attributeName="opacity" values="0;0.6;0" dur="2s" repeatCount="indefinite"/></path>
+                    <path d="M115,38 Q100,28 100,55 Q100,82 115,72" fill="none" stroke="white" stroke-width="1" stroke-linecap="round"><animate attributeName="opacity" values="0;0.4;0" dur="2s" repeatCount="indefinite" begin="0.3s"/></path>
+                </svg>
+            </div>
+
+            <div class="method-words mt-4" id="methodWords">
+                <span class="method-word" data-i18n="method_1">Hold.</span>
+                <span class="method-word" data-i18n="method_2">Speak.</span>
+                <span class="method-word" data-i18n="method_3">Done.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FEATURES ═══ -->
+    <section id="features">
+        <div class="container">
+            <p class="label reveal" data-i18n="features_label">Features</p>
+            <p class="subtitle mt-3 reveal" data-i18n="features_sub">Everything you need. Nothing you don't.</p>
+
+            <div class="feature-grid mt-6 stagger reveal">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="20" r="6" fill="none" stroke="white" stroke-width="1.5"><animate attributeName="r" values="6;7;6" dur="2s" repeatCount="indefinite"/></circle>
+                            <path d="M14,20 A10,10 0 0,0 34,20" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="24" y1="30" x2="24" y2="36" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="18" y1="36" x2="30" y2="36" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="24" cy="20" r="12" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"><animate attributeName="r" values="12;16;12" dur="3s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values="0.15;0;0.15" dur="3s" repeatCount="indefinite"/></circle>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_dictation_title">Voice Dictation</h3>
+                    <p data-i18n="feat_dictation_desc">Press fn — speak — press fn again. Text appears instantly in any app.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <text x="8" y="22" fill="white" font-size="12" font-family="'Inter',sans-serif" font-weight="600" opacity="0.8">中</text>
+                            <text x="30" y="36" fill="white" font-size="12" font-family="'Inter',sans-serif" font-weight="600" opacity="0.8">En</text>
+                            <path d="M22,18 L28,30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="2,2"><animate attributeName="stroke-dashoffset" values="0;-20" dur="3s" repeatCount="indefinite"/></path>
+                            <path d="M20,14 L26,14 L24,11" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite"/></path>
+                            <path d="M28,34 L22,34 L24,37" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite" begin="1s"/></path>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_translate_title">Real-time Translation</h3>
+                    <p data-i18n="feat_translate_desc">fn + Shift — speak Chinese, get English text. Or vice versa.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24,8 L26,18 L36,20 L26,22 L24,32 L22,22 L12,20 L22,18 Z" fill="none" stroke="white" stroke-width="1" stroke-linejoin="round"><animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="rotate" values="0 24 20;15 24 20;0 24 20" dur="6s" repeatCount="indefinite"/></path>
+                            <path d="M36,32 L37,36 L40,37 L37,38 L36,42 L35,38 L32,37 L35,36 Z" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="2s" repeatCount="indefinite" begin="1s"/></path>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_polish_title">AI Polish</h3>
+                    <p data-i18n="feat_polish_desc">Auto-corrects punctuation, removes filler words, fixes formatting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="8" width="24" height="32" rx="3" fill="none" stroke="white" stroke-width="1.5"/>
+                            <line x1="18" y1="16" x2="30" y2="16" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                            <line x1="18" y1="22" x2="28" y2="22" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                            <line x1="18" y1="28" x2="26" y2="28" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                            <circle cx="34" cy="34" r="7" fill="black" stroke="white" stroke-width="1"/>
+                            <line x1="34" y1="30" x2="34" y2="38" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <line x1="30" y1="34" x2="38" y2="34" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_dict_title">Custom Dictionary</h3>
+                    <p data-i18n="feat_dict_desc">Add names, brands & technical terms so ASR never mishears them.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="28" width="6" height="12" rx="1" fill="rgba(255,255,255,0.3)"><animate attributeName="height" values="8;12;8" dur="3s" repeatCount="indefinite"/><animate attributeName="y" values="32;28;32" dur="3s" repeatCount="indefinite"/></rect>
+                            <rect x="21" y="18" width="6" height="22" rx="1" fill="rgba(255,255,255,0.5)"><animate attributeName="height" values="18;22;18" dur="3s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="y" values="22;18;22" dur="3s" repeatCount="indefinite" begin="0.5s"/></rect>
+                            <rect x="32" y="12" width="6" height="28" rx="1" fill="rgba(255,255,255,0.7)"><animate attributeName="height" values="24;28;24" dur="3s" repeatCount="indefinite" begin="1s"/><animate attributeName="y" values="16;12;16" dur="3s" repeatCount="indefinite" begin="1s"/></rect>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_dashboard_title">Usage Dashboard</h3>
+                    <p data-i18n="feat_dashboard_desc">Track words dictated, time saved, and accuracy trends.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24,6 L38,14 L38,26 Q38,38 24,44 Q10,38 10,26 L10,14 Z" fill="none" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path d="M18,24 L22,28 L30,18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M24,6 L38,14 L38,26 Q38,38 24,44 Q10,38 10,26 L10,14 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"><animate attributeName="stroke-opacity" values="0.1;0.02;0.1" dur="4s" repeatCount="indefinite"/></path>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="feat_privacy_title">Privacy First</h3>
+                    <p data-i18n="feat_privacy_desc">All data stays on your Mac. No cloud upload unless you choose to.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SHORTCUTS ═══ -->
+    <section id="shortcuts">
+        <div class="container">
+            <p class="label reveal" data-i18n="shortcuts_label">Keyboard Shortcuts</p>
+            <p class="subtitle mt-3 reveal" data-i18n="shortcuts_sub">One key to rule them all.</p>
+            <div class="shortcut-grid mt-6 stagger reveal">
+                <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_dictate">Dictate (toggle)</span><span class="shortcut-desc" data-i18n="key_dictate_desc">Press to start, press again to stop</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/></circle></svg></div>
+                <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd><span class="key-plus">+</span><kbd>hold</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_ptt">Push-to-Talk</span><span class="shortcut-desc" data-i18n="key_ptt_desc">Hold to speak, release to type</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/></circle></svg></div>
+                <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd><span class="key-plus">+</span><kbd>⇧</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_translate">Translate</span><span class="shortcut-desc" data-i18n="key_translate_desc">Speak one language, output another</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="1s"/></circle></svg></div>
+                <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd><span class="key-plus">+</span><kbd>␣</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_ai">Ask AI</span><span class="shortcut-desc" data-i18n="key_ai_desc">Voice-powered AI assistant</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="1.5s"/></circle></svg></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ WHAT IT IS / IS NOT ═══ -->
+    <section id="philosophy">
+        <div class="container">
+            <div class="dual-grid reveal">
+                <div class="col col-yes">
+                    <h3 data-i18n="what_is">What it is</h3>
+                    <ul>
+                        <li><span class="icon">✦</span> <span data-i18n="is_1">A voice key for any app</span></li>
+                        <li><span class="icon">✦</span> <span data-i18n="is_2">macOS-native, built with Swift</span></li>
+                        <li><span class="icon">✦</span> <span data-i18n="is_3">Works with your existing tools</span></li>
+                        <li><span class="icon">✦</span> <span data-i18n="is_4">Keyboard-grade reliability</span></li>
+                    </ul>
+                </div>
+                <div class="col col-no">
+                    <h3 data-i18n="what_not">What it is not</h3>
+                    <ul>
+                        <li><span class="icon">✕</span> <span data-i18n="not_1">Always-on listening</span></li>
+                        <li><span class="icon">✕</span> <span data-i18n="not_2">A recording gadget</span></li>
+                        <li><span class="icon">✕</span> <span data-i18n="not_3">A smart assistant</span></li>
+                        <li><span class="icon">✕</span> <span data-i18n="not_4">A replacement for your keyboard</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ INSTALL ═══ -->
+    <section id="install">
+        <div class="container text-center">
+            <p class="label reveal" data-i18n="install_label">Get Started</p>
+            <h2 class="mt-4 reveal" data-i18n="install_title">Type without typing.</h2>
+            <p class="subtitle reveal" data-i18n="install_sub">macOS 14 Sonoma+ required</p>
+            <div class="install-visual mt-6 reveal-scale">
+                <svg class="download-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                    <circle cx="40" cy="40" r="35" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="220" stroke-dashoffset="220" stroke-linecap="round"><animate attributeName="stroke-dashoffset" values="220;0" dur="2s" fill="freeze"/></circle>
+                    <path d="M40,22 L40,50" stroke="white" stroke-width="2" stroke-linecap="round"><animate attributeName="d" values="M40,22 L40,46;M40,26 L40,50;M40,22 L40,46" dur="2s" repeatCount="indefinite"/></path>
+                    <path d="M30,42 L40,52 L50,42" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M30,38 L40,48 L50,38;M30,42 L40,52 L50,42;M30,38 L40,48 L50,38" dur="2s" repeatCount="indefinite"/></path>
+                    <line x1="26" y1="58" x2="54" y2="58" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="install-steps mt-6 reveal">
+                <div class="install-step"><span class="step-num">1</span><span data-i18n="step_1">Download the .dmg installer</span></div>
+                <div class="install-step"><span class="step-num">2</span><span data-i18n="step_2">Drag Comma.app into Applications</span></div>
+                <div class="install-step"><span class="step-num">3</span><span data-i18n="step_3">Launch — the onboarding guide walks you through</span></div>
+            </div>
+            <a href="https://comma.agoralab.co/downloads/Comma.dmg" target="_blank" rel="noopener" class="btn btn-filled mt-6" style="display:inline-flex;"><span data-i18n="download_btn">Download for macOS</span></a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://scientifictyping.com">Scientific Typing™</a>
+            </div>
+            <p class="copyright">© 2026 Scientific Typing™. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <script>
+        // ═══════════════════════════════════════════════════
+        // LANGUAGE MATRIX — SVG Floating Particles
+        // Code tokens, text fragments, and commas drift softly.
+        // Commas act as gravitational nodes that attract and
+        // connect code↔text with dashed data-flow lines.
+        // ═══════════════════════════════════════════════════
+
+        (function initLanguageMatrix() {
+            const svg = document.getElementById('heroMatrix');
+            if (!svg) return;
+
+            const NS = 'http://www.w3.org/2000/svg';
+
+            const codeTokens = ['{', '}', '//', '=>', '()', '[]', '&&', '||', 'fn', 'let', 'if', 'for', '===', '!=', '++', '--', '<>', '...', '?.', '0x', '/**/', '#!', '<?', '%s', '\\n', '|>', '::'];
+            const textTokens = ['voice', 'word', 'text', 'speak', 'type', 'language', 'input', 'sound', 'say', 'hear', '语音', '文字', '输入', '说', '听', '写', '词', '句', 'речь', 'mot', 'Sprache', 'voz', '言', '話', 'λόγος'];
+            const commaTokens = [',', '，', '、', '،', '،', ','];
+
+            const particles = [];
+            const PARTICLE_COUNT = 45;
+            const CONNECTION_DISTANCE = 180;
+            let W = window.innerWidth;
+            let H = window.innerHeight;
+
+            svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+            function rand(min, max) { return min + Math.random() * (max - min); }
+
+            class Particle {
+                constructor(type) {
+                    this.type = type;
+                    this.x = rand(0, W);
+                    this.y = rand(0, H);
+                    this.vx = rand(-0.3, 0.3);
+                    this.vy = rand(-0.2, 0.2);
+                    this.baseOpacity = type === 'comma' ? 0.5 : 0.12;
+                    this.opacity = this.baseOpacity;
+                    this.phase = rand(0, Math.PI * 2);
+                    this.freq = rand(0.005, 0.015);
+
+                    if (type === 'code') {
+                        this.label = codeTokens[Math.floor(Math.random() * codeTokens.length)];
+                        this.fontSize = rand(10, 18);
+                        this.fontFamily = "'JetBrains Mono', monospace";
+                    } else if (type === 'text') {
+                        this.label = textTokens[Math.floor(Math.random() * textTokens.length)];
+                        this.fontSize = rand(10, 16);
+                        this.fontFamily = "'Inter', sans-serif";
+                    } else {
+                        this.label = commaTokens[Math.floor(Math.random() * commaTokens.length)];
+                        this.fontSize = rand(22, 40);
+                        this.fontFamily = "'Inter', sans-serif";
+                    }
+
+                    this.el = document.createElementNS(NS, 'text');
+                    this.el.textContent = this.label;
+                    this.el.setAttribute('font-family', this.fontFamily);
+                    this.el.setAttribute('font-size', this.fontSize);
+                    this.el.setAttribute('fill', '#fff');
+                    this.el.setAttribute('opacity', this.opacity);
+                    this.el.setAttribute('font-weight', type === 'comma' ? '700' : '300');
+                    this.el.setAttribute('pointer-events', 'none');
+                    this.el.setAttribute('text-anchor', 'middle');
+                    svg.appendChild(this.el);
+                }
+
+                update(time) {
+                    this.x += this.vx + Math.sin(time * this.freq + this.phase) * 0.15;
+                    this.y += this.vy + Math.cos(time * this.freq * 0.7 + this.phase) * 0.1;
+                    if (this.x < -50) this.x = W + 50;
+                    if (this.x > W + 50) this.x = -50;
+                    if (this.y < -50) this.y = H + 50;
+                    if (this.y > H + 50) this.y = -50;
+                    this.opacity = this.baseOpacity + Math.sin(time * 0.002 + this.phase) * (this.baseOpacity * 0.5);
+                    this.el.setAttribute('x', this.x);
+                    this.el.setAttribute('y', this.y);
+                    this.el.setAttribute('opacity', Math.max(0.03, this.opacity));
+                }
+            }
+
+            const connectionPool = [];
+            const MAX_CONNECTIONS = 30;
+            for (let i = 0; i < MAX_CONNECTIONS; i++) {
+                const line = document.createElementNS(NS, 'line');
+                line.setAttribute('stroke', '#fff');
+                line.setAttribute('stroke-width', '0.5');
+                line.setAttribute('opacity', '0');
+                line.setAttribute('stroke-dasharray', '3,4');
+                svg.insertBefore(line, svg.firstChild);
+                connectionPool.push(line);
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                const r = Math.random();
+                const type = r < 0.4 ? 'code' : r < 0.8 ? 'text' : 'comma';
+                particles.push(new Particle(type));
+            }
+
+            let animTime = 0;
+            function animate() {
+                animTime++;
+                particles.forEach(p => p.update(animTime));
+
+                let connIdx = 0;
+                const commas = particles.filter(p => p.type === 'comma');
+                const others = particles.filter(p => p.type !== 'comma');
+
+                for (const comma of commas) {
+                    for (const other of others) {
+                        if (connIdx >= MAX_CONNECTIONS) break;
+                        const dx = comma.x - other.x;
+                        const dy = comma.y - other.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < CONNECTION_DISTANCE) {
+                            const line = connectionPool[connIdx];
+                            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.15;
+                            line.setAttribute('x1', comma.x);
+                            line.setAttribute('y1', comma.y);
+                            line.setAttribute('x2', other.x);
+                            line.setAttribute('y2', other.y);
+                            line.setAttribute('opacity', opacity);
+                            line.setAttribute('stroke-dashoffset', (animTime * 0.3) % 14);
+                            connIdx++;
+                        }
+                    }
+                    if (connIdx >= MAX_CONNECTIONS) break;
+                }
+                for (let i = connIdx; i < MAX_CONNECTIONS; i++) {
+                    connectionPool[i].setAttribute('opacity', '0');
+                }
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                W = window.innerWidth;
+                H = window.innerHeight;
+                svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+            });
+        })();
+
+        // ═══════════════════════════════════════════════════
+        // i18n
+        // ═══════════════════════════════════════════════════
+        const i18n = {
+            en: {
+                nav_download: 'Download',
+                hero_sub: 'Hold, Speak, Done',
+                problem_label: 'The Problem',
+                problem_1: 'Typing breaks flow.',
+                problem_2: 'Switching apps kills momentum.',
+                problem_3: 'Copy-paste is not a workflow.',
+                method_label: 'The Method',
+                method_1: 'Hold.',
+                method_2: 'Speak.',
+                method_3: 'Done.',
+                features_label: 'Features',
+                features_sub: 'Everything you need. Nothing you don\'t.',
+                feat_dictation_title: 'Voice Dictation',
+                feat_dictation_desc: 'Press fn — speak — press fn again. Text appears instantly in any app.',
+                feat_translate_title: 'Real-time Translation',
+                feat_translate_desc: 'fn + Shift — speak Chinese, get English text. Or vice versa.',
+                feat_polish_title: 'AI Polish',
+                feat_polish_desc: 'Auto-corrects punctuation, removes filler words, fixes formatting.',
+                feat_dict_title: 'Custom Dictionary',
+                feat_dict_desc: 'Add names, brands & technical terms so ASR never mishears them.',
+                feat_dashboard_title: 'Usage Dashboard',
+                feat_dashboard_desc: 'Track words dictated, time saved, and accuracy trends.',
+                feat_privacy_title: 'Privacy First',
+                feat_privacy_desc: 'All data stays on your Mac. No cloud upload unless you choose to.',
+                shortcuts_label: 'Keyboard Shortcuts',
+                shortcuts_sub: 'One key to rule them all.',
+                key_dictate: 'Dictate (toggle)',
+                key_dictate_desc: 'Press to start, press again to stop',
+                key_ptt: 'Push-to-Talk',
+                key_ptt_desc: 'Hold to speak, release to type',
+                key_translate: 'Translate',
+                key_translate_desc: 'Speak one language, output another',
+                key_ai: 'Ask AI',
+                key_ai_desc: 'Voice-powered AI assistant',
+                what_is: 'What it is',
+                what_not: 'What it is not',
+                is_1: 'A voice key for any app',
+                is_2: 'macOS-native, built with Swift',
+                is_3: 'Works with your existing tools',
+                is_4: 'Keyboard-grade reliability',
+                not_1: 'Always-on listening',
+                not_2: 'A recording gadget',
+                not_3: 'A smart assistant',
+                not_4: 'A replacement for your keyboard',
+                install_label: 'Get Started',
+                install_title: 'Type without typing.',
+                install_sub: 'macOS 14 Sonoma+ required',
+                step_1: 'Download the .dmg installer',
+                step_2: 'Drag Comma.app into Applications',
+                step_3: 'Launch — the onboarding guide walks you through',
+                download_btn: 'Download for macOS',
+            },
+            zh: {
+                nav_download: '下载',
+                hero_sub: '按键，说话，完成',
+                problem_label: '痛点',
+                problem_1: '打字打断心流。',
+                problem_2: '切换应用打断思路。',
+                problem_3: '复制粘贴不是工作流。',
+                method_label: '方法',
+                method_1: '按键。',
+                method_2: '说话。',
+                method_3: '完成。',
+                features_label: '功能特性',
+                features_sub: '该有的都有，不该有的都没有。',
+                feat_dictation_title: '语音输入',
+                feat_dictation_desc: '按 fn → 说话 → 再按 fn，文字即时出现在任何应用中。',
+                feat_translate_title: '实时翻译',
+                feat_translate_desc: 'fn + Shift → 说中文，出英文（反之亦然）。',
+                feat_polish_title: 'AI 润色',
+                feat_polish_desc: '自动纠正标点、去除口头语、优化格式。',
+                feat_dict_title: '自定义词典',
+                feat_dict_desc: '添加人名、品牌名和专业术语，语音识别不再出错。',
+                feat_dashboard_title: '使用仪表板',
+                feat_dashboard_desc: '追踪输入字数、节省时间和准确率趋势。',
+                feat_privacy_title: '隐私优先',
+                feat_privacy_desc: '所有数据存在本地 Mac 上，不会上传到云端。',
+                shortcuts_label: '快捷键',
+                shortcuts_sub: '一个键，掌控一切。',
+                key_dictate: '语音输入（切换）',
+                key_dictate_desc: '按一下开始，再按一下结束',
+                key_ptt: '按住说话',
+                key_ptt_desc: '按住说话，松手即输入',
+                key_translate: '翻译模式',
+                key_translate_desc: '说一种语言，输出另一种',
+                key_ai: 'AI 问答',
+                key_ai_desc: '语音驱动的 AI 助手',
+                what_is: '它是什么',
+                what_not: '它不是什么',
+                is_1: '适用于任何应用的语音按键',
+                is_2: 'macOS 原生，Swift 构建',
+                is_3: '与你现有的工具无缝协作',
+                is_4: '键盘级的可靠性',
+                not_1: '始终监听',
+                not_2: '录音设备',
+                not_3: '智能助手',
+                not_4: '键盘的替代品',
+                install_label: '立即开始',
+                install_title: '不打字，也能打字。',
+                install_sub: '需要 macOS 14 Sonoma 或更高版本',
+                step_1: '下载 .dmg 安装包',
+                step_2: '将 Comma.app 拖入「应用程序」文件夹',
+                step_3: '启动应用 — 引导程序会带你完成设置',
+                download_btn: '下载 macOS 版本',
+            }
+        };
+
+        let currentLang = 'en';
+        function setLang(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) el.textContent = i18n[lang][key];
+            });
+            document.querySelectorAll('.lang-label').forEach(el => {
+                el.style.display = el.getAttribute('data-lang') === lang ? 'inline' : 'none';
+            });
+            clearTimeout(typeTimeout);
+            heroLines = lang === 'zh'
+                ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
+                : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
+            lineIdx = 0; charIdx = 0; erasing = false;
+            heroTypedEl.textContent = '';
+            typeTimeout = setTimeout(tick, 200);
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+        document.getElementById('langToggle').addEventListener('click', () => setLang(currentLang === 'en' ? 'zh' : 'en'));
+
+        // ─── Scroll Progress ───
+        const scrollProgress = document.getElementById('scrollProgress');
+        const backToTop = document.getElementById('backToTop');
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress.style.width = (scrollTop / docHeight) * 100 + '%';
+            backToTop.classList.toggle('visible', scrollTop > 400);
+        }
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ─── Smart Nav Hide/Show ───
+        let lastScroll = 0;
+        const mainNav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            const cs = window.scrollY;
+            mainNav.classList.toggle('hidden', cs > lastScroll && cs > 120);
+            lastScroll = cs;
+        }, { passive: true });
+
+        // ─── Section Nav Dots ───
+        const dots = document.querySelectorAll('.section-nav .dot');
+        const sections = document.querySelectorAll('section[id]');
+        function updateActiveDot() {
+            let current = '';
+            sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 200) current = sec.id; });
+            dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+        }
+        window.addEventListener('scroll', updateActiveDot, { passive: true });
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = document.getElementById(dot.dataset.target);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ─── Scroll Reveal ───
+        const revealEls = document.querySelectorAll('.reveal, .reveal-scale, .stagger');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // ─── Hero Typewriter (rotate: type → pause → erase → next, loop) ───
+        const heroTypedEl = document.getElementById('heroTyped');
+        let heroLines = ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
+        let lineIdx = 0, charIdx = 0, erasing = false;
+        let typeTimeout;
+
+        function tick() {
+            const text = heroLines[lineIdx];
+            if (!erasing) {
+                // Typing forward
+                if (charIdx <= text.length) {
+                    heroTypedEl.textContent = text.slice(0, charIdx);
+                    charIdx++;
+                    typeTimeout = setTimeout(tick, 55 + Math.random() * 35);
+                } else {
+                    // Finished typing — pause, then start erasing
+                    typeTimeout = setTimeout(() => { erasing = true; tick(); }, 1800);
+                }
+            } else {
+                // Erasing backward
+                if (charIdx > 0) {
+                    charIdx--;
+                    heroTypedEl.textContent = text.slice(0, charIdx);
+                    typeTimeout = setTimeout(tick, 30);
+                } else {
+                    // Finished erasing — move to next line
+                    erasing = false;
+                    lineIdx = (lineIdx + 1) % heroLines.length;
+                    typeTimeout = setTimeout(tick, 400);
+                }
+            }
+        }
+        typeTimeout = setTimeout(tick, 400);
+
+        // ─── Method Words ───
+        const methodSection = document.getElementById('method');
+        const methodWords = document.querySelectorAll('.method-word');
+        const methodObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    methodWords.forEach((w, i) => setTimeout(() => w.classList.add('active'), i * 250));
+                    methodObserver.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        methodObserver.observe(methodSection);
+
+        // ─── Sound Wave ───
+        function genWave(time, off, amp) {
+            let d = 'M0,40';
+            for (let x = 0; x <= 1200; x += 4) {
+                const y = 40 + Math.sin(x*0.008+time+off)*amp + Math.sin(x*0.015+time*1.3+off)*(amp*0.5) + Math.sin(x*0.003+time*0.7)*(amp*0.3);
+                d += ` L${x},${y.toFixed(2)}`;
+            }
+            return d;
+        }
+        const w1=document.getElementById('wavePath1'), w2=document.getElementById('wavePath2'), w3=document.getElementById('wavePath3');
+        let wt = 0;
+        function animW() { wt+=0.03; if(w1)w1.setAttribute('d',genWave(wt,0,12)); if(w2)w2.setAttribute('d',genWave(wt,2,8)); if(w3)w3.setAttribute('d',genWave(wt,4,6)); requestAnimationFrame(animW); }
+        animW();
+
+        // ─── Feature Card Hover Glow ───
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                card.style.setProperty('--mx', ((e.clientX-r.left)/r.width)*100+'%');
+                card.style.setProperty('--my', ((e.clientY-r.top)/r.height)*100+'%');
+            });
+        });
+
+        console.log('%c , %c Comma — Voice as a Keyboard', 'font-size:32px;font-weight:800;color:#fff;background:#000;padding:8px 4px 8px 16px;', 'font-size:12px;font-weight:400;color:#888;background:#000;padding:8px 16px 8px 0;');
+    </script>
+
+</body>
+</html>

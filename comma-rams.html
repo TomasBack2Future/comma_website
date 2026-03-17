@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>comma,01 — Touch to speak. Release to type.</title>
+    <meta name="description"
+        content="comma,01 — The first device dedicated to Scientific Typing™. Touch to speak. Release to type. A physical anchor for your voice.">
+    <link rel="stylesheet" href="comma-rams.css">
+</head>
+
+<body>
+
+    <!-- Scroll Progress (right edge, vertical) -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Section Nav Dots -->
+    <div class="section-nav" id="sectionNav">
+        <div class="dot active" data-target="hero" data-label="Top"></div>
+        <div class="dot" data-target="philosophy" data-label="Philosophy"></div>
+        <div class="dot" data-target="interaction" data-label="Interaction"></div>
+        <div class="dot" data-target="engineering" data-label="Engineering"></div>
+        <div class="dot" data-target="wear" data-label="Wear"></div>
+        <div class="dot" data-target="specs" data-label="Specs"></div>
+        <div class="dot" data-target="waitlist" data-label="Waitlist"></div>
+    </div>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="navbar" id="mainNav">
+        <div class="nav-left">
+            <a href="index.html" class="nav-brand">
+                <span class="comma-mark">,</span>
+                Scientific Typing™
+            </a>
+            <span class="nav-model">comma,01</span>
+        </div>
+        <div class="nav-links">
+            <a href="#philosophy">Philosophy</a>
+            <a href="#interaction">Interaction</a>
+            <a href="#engineering">Engineering</a>
+            <a href="#specs">Specs</a>
+            <a href="#waitlist" class="btn">Join Waitlist</a>
+        </div>
+    </nav>
+
+    <div class="spacer-nav"></div>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="section-badge reveal">The First Device</span>
+                <h1 class="display reveal" style="transition-delay:0.1s; margin-top: 16px;">
+                    <span class="comma-prefix">comma,</span>01
+                </h1>
+                <p class="hero-tagline reveal" style="transition-delay:0.2s;">
+                    Touch to speak. Release to type.
+                </p>
+                <div class="hero-badges reveal" style="transition-delay:0.3s;">
+                    <span class="badge">12g</span>
+                    <span class="badge">BLE 5.3</span>
+                    <span class="badge">IP67</span>
+                    <span class="badge">7-Day Battery</span>
+                </div>
+            </div>
+            <div class="hero-device reveal-scale" style="transition-delay:0.3s;">
+                <!-- Product SVG: Minimal comma device illustration -->
+                <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Swiss grid background -->
+                    <defs>
+                        <radialGradient id="deviceGlow" cx="50%" cy="45%" r="45%">
+                            <stop offset="0%" stop-color="#F0EFE9" />
+                            <stop offset="100%" stop-color="transparent" />
+                        </radialGradient>
+                        <linearGradient id="titaniumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#E8E8E6" />
+                            <stop offset="50%" stop-color="#F5F5F3" />
+                            <stop offset="100%" stop-color="#D8D8D6" />
+                        </linearGradient>
+                        <linearGradient id="sapphireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FAFAFA" />
+                            <stop offset="100%" stop-color="#F0F0EE" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Ambient glow -->
+                    <circle cx="200" cy="195" r="160" fill="url(#deviceGlow)" />
+
+                    <!-- Shadow -->
+                    <ellipse cx="200" cy="330" rx="90" ry="12" fill="rgba(0,0,0,0.06)" />
+
+                    <!-- Device body (titanium chassis) -->
+                    <circle cx="200" cy="195" r="100" fill="url(#titaniumGrad)" stroke="#C8C8C6" stroke-width="1.5" />
+
+                    <!-- Inner bezel -->
+                    <circle cx="200" cy="195" r="88" fill="none" stroke="#D8D8D6" stroke-width="0.5" />
+
+                    <!-- Sapphire touch surface -->
+                    <circle cx="200" cy="195" r="75" fill="url(#sapphireGrad)" stroke="#E5E5E3" stroke-width="1" />
+
+                    <!-- Inner touch zone -->
+                    <circle cx="200" cy="195" r="38" fill="none" stroke="#D8D8D6" stroke-width="0.8" />
+
+                    <!-- Comma symbol -->
+                    <text x="200" y="210" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800"
+                        font-size="36" fill="#C8C8C6">,</text>
+
+                    <!-- Status LED -->
+                    <circle cx="200" cy="138" r="3" fill="#E85D2A" opacity="0.6" />
+                    <circle cx="200" cy="138" r="6" fill="none" stroke="#E85D2A" stroke-width="0.5" opacity="0.3" />
+
+                    <!-- Dimension lines -->
+                    <g opacity="0.4">
+                        <!-- Width dimension -->
+                        <line x1="95" y1="320" x2="305" y2="320" stroke="#E85D2A" stroke-width="0.6" />
+                        <line x1="95" y1="315" x2="95" y2="325" stroke="#E85D2A" stroke-width="0.6" />
+                        <line x1="305" y1="315" x2="305" y2="325" stroke="#E85D2A" stroke-width="0.6" />
+                        <text x="200" y="337" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9"
+                            fill="#E85D2A">28 mm</text>
+
+                        <!-- Height dimension -->
+                        <line x1="330" y1="95" x2="330" y2="295" stroke="#E85D2A" stroke-width="0.6" />
+                        <line x1="325" y1="95" x2="335" y2="95" stroke="#E85D2A" stroke-width="0.6" />
+                        <line x1="325" y1="295" x2="335" y2="295" stroke="#E85D2A" stroke-width="0.6" />
+                        <text x="342" y="200" text-anchor="start" font-family="JetBrains Mono, monospace" font-size="9"
+                            fill="#E85D2A" transform="rotate(90, 342, 200)">28 mm</text>
+                    </g>
+
+                    <!-- Material callout -->
+                    <g opacity="0.5">
+                        <line x1="260" y1="140" x2="320" y2="100" stroke="#999" stroke-width="0.5"
+                            stroke-dasharray="2 2" />
+                        <text x="322" y="98" font-family="JetBrains Mono, monospace" font-size="8" fill="#999">
+                            Sapphire Crystal</text>
+                        <line x1="280" y1="215" x2="325" y2="245" stroke="#999" stroke-width="0.5"
+                            stroke-dasharray="2 2" />
+                        <text x="327" y="248" font-family="JetBrains Mono, monospace" font-size="8" fill="#999">
+                            Grade 5 Ti</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ PHILOSOPHY ═══ -->
+    <section id="philosophy" class="section-alt">
+        <div class="container">
+            <span class="section-badge reveal">Design Philosophy</span>
+            <h2 class="reveal" style="margin-top: 16px;">A physical anchor<br>for your voice.</h2>
+            <p class="philosophy-text reveal" style="transition-delay:0.1s;">
+                Voice input failed because it lacked a <strong>physical ritual</strong>.
+                No beginning. No end. No certainty.
+                comma,01 gives voice a body&nbsp;— <strong>touch to begin, release to commit</strong>.
+                The physical hold is the interface.
+            </p>
+            <blockquote class="philosophy-quote reveal" style="transition-delay:0.2s;">
+                "Every element must justify its existence."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- ═══ INTERACTION — Interactive Demo ═══ -->
+    <section id="interaction">
+        <div class="container">
+            <span class="section-badge reveal">Interaction</span>
+            <h2 class="reveal" style="margin-top: 16px;">One surface. Five operations.</h2>
+            <p class="body-lg reveal" style="transition-delay:0.1s;">Capacitive touch + mechanical press. No buttons to
+                find.</p>
+
+            <!-- Live Demo Device -->
+            <div class="demo-area reveal-scale" style="transition-delay:0.2s;">
+                <div class="demo-led" id="demoLed"></div>
+                <div class="demo-device" id="demoDevice">
+                    <div class="demo-ring"></div>
+                    <div class="demo-ring"></div>
+                    <div class="device-inner">,</div>
+                </div>
+                <div class="demo-status" id="demoStatus">Ready</div>
+                <div class="waveform" id="waveform">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="typed-output" id="typedOutput"></div>
+                <p class="demo-hint">Touch & hold to speak · Click for commands · Double-click to select · Triple-click
+                    to delete</p>
+            </div>
+
+            <!-- Operation Cards -->
+            <div class="interaction-grid stagger reveal">
+                <div class="interaction-card" data-action="touch" id="cardTouch">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M12 12v8" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Touch</div>
+                    <div class="card-desc">Capacitive detection. Device wakes. LED on.</div>
+                    <div class="accent-line"></div>
+                </div>
+
+                <div class="interaction-card" data-action="release" id="cardRelease">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M12 20V4M5 11l7-7 7 7" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Release</div>
+                    <div class="card-desc">Voice buffer commits. Text appears instantly.</div>
+                    <div class="accent-line"></div>
+                </div>
+
+                <div class="interaction-card" data-action="click" id="cardClick">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="6" y="6" width="12" height="12" rx="2" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Click</div>
+                    <div class="card-desc">Mechanical press. Triggers primary action.</div>
+                    <div class="accent-line"></div>
+                </div>
+
+                <div class="interaction-card" data-action="double" id="cardDouble">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="4" y="8" width="8" height="8" rx="1" />
+                            <rect x="12" y="8" width="8" height="8" rx="1" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Double Click</div>
+                    <div class="card-desc">Select last sentence. Ready for correction.</div>
+                    <div class="accent-line"></div>
+                </div>
+
+                <div class="interaction-card" data-action="triple" id="cardTriple">
+                    <div class="led"></div>
+                    <div class="feedback"></div>
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <line x1="4" y1="12" x2="20" y2="12" />
+                            <line x1="4" y1="8" x2="20" y2="8" />
+                            <line x1="4" y1="16" x2="20" y2="16" />
+                        </svg>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="card-title">Triple Click</div>
+                    <div class="card-desc">Delete last block. Clean undo.</div>
+                    <div class="accent-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ ENGINEERING — Exploded View ═══ -->
+    <section id="engineering" class="eng-scroll-track exploded-section">
+        <div class="eng-sticky-content">
+            <div class="container">
+                <span class="section-badge reveal">Engineering</span>
+                <h2 class="reveal" style="margin-top: 16px;">Seven layers. Zero seams.</h2>
+                <p class="body-lg reveal">Ultrasonic welding. No visible screws.</p>
+
+                <div class="exploded-stage" id="explodedView">
+                    <svg viewBox="0 0 400 600" class="exploded-svg" preserveAspectRatio="xMidYMid meet">
+                        <!-- Connecting line -->
+                        <line x1="200" y1="420" x2="200" y2="420" class="exp-center-line" />
+
+                        <!-- Layer 7: Titanium Chassis (base) -->
+                        <g class="exp-layer" style="--ty: 0px;" data-layer="7">
+                            <path d="M 100 420 L 100 450 A 100 50 0 0 0 300 450 L 300 420 A 100 50 0 0 1 100 420 Z"
+                                fill="#E8E8E6" />
+                            <ellipse cx="200" cy="420" rx="100" ry="50" fill="#F0F0EE" stroke="#C8C8C6"
+                                stroke-width="2" />
+                            <ellipse cx="200" cy="420" rx="90" ry="45" fill="#F5F5F3" stroke="#D8D8D6"
+                                stroke-width="1" />
+                        </g>
+
+                        <!-- Layer 6: Li-Po Cell -->
+                        <g class="exp-layer" style="--ty: -45px;" data-layer="6">
+                            <path d="M 115 420 L 115 435 A 85 42.5 0 0 0 285 435 L 285 420 A 85 42.5 0 0 1 115 420 Z"
+                                fill="#D8D8D6" />
+                            <ellipse cx="200" cy="420" rx="85" ry="42.5" fill="#E0E0DE" />
+                            <path d="M 190 420 L 210 420 M 200 410 L 200 430" stroke="#999" stroke-width="2" />
+                        </g>
+
+                        <!-- Layer 5: BLE 5.3 Radio (PCB) -->
+                        <g class="exp-layer" style="--ty: -90px;" data-layer="5">
+                            <ellipse cx="200" cy="420" rx="90" ry="45" fill="#E8F5E9" stroke="#81C784"
+                                stroke-width="1.5" />
+                            <rect x="170" y="405" width="25" height="25" fill="#F5F5F3" stroke="#E85D2A"
+                                stroke-width="1" transform="skewX(-45)" />
+                            <rect x="220" y="415" width="15" height="15" fill="#F5F5F3" stroke="#E85D2A"
+                                stroke-width="1" transform="skewX(-45)" />
+                            <circle cx="160" cy="430" r="3" fill="#E85D2A" />
+                            <circle cx="240" cy="410" r="3" fill="#E85D2A" />
+                        </g>
+
+                        <!-- Layer 4: Haptic Feedback Motor -->
+                        <g class="exp-layer" style="--ty: -135px;" data-layer="4">
+                            <path d="M 160 420 L 160 432 A 40 20 0 0 0 240 432 L 240 420 A 40 20 0 0 1 160 420 Z"
+                                fill="#D8D8D6" />
+                            <ellipse cx="200" cy="420" rx="40" ry="20" fill="#E0E0DE" stroke="#C8C8C6"
+                                stroke-width="1" />
+                            <ellipse cx="200" cy="420" rx="20" ry="10" fill="#F0F0EE" />
+                        </g>
+
+                        <!-- Layer 3: Force-Sensitive Membrane -->
+                        <g class="exp-layer" style="--ty: -180px;" data-layer="3">
+                            <ellipse cx="200" cy="420" rx="95" ry="47.5" fill="rgba(232, 93, 42, 0.08)"
+                                stroke="rgba(232, 93, 42, 0.5)" stroke-width="1.5" stroke-dasharray="10 5" />
+                        </g>
+
+                        <!-- Layer 2: Capacitive Sensor Array -->
+                        <g class="exp-layer" style="--ty: -225px;" data-layer="2">
+                            <ellipse cx="200" cy="420" rx="98" ry="49" fill="rgba(100, 181, 246, 0.15)"
+                                stroke="rgba(66, 165, 245, 0.4)" stroke-width="1" />
+                            <path d="M 120 420 Q 200 390 280 420 M 130 430 Q 200 400 270 430"
+                                stroke="rgba(66, 165, 245, 0.25)" stroke-width="1" fill="none" />
+                            <path d="M 160 390 Q 180 420 160 450 M 240 390 Q 220 420 240 450"
+                                stroke="rgba(66, 165, 245, 0.25)" stroke-width="1" fill="none" />
+                        </g>
+
+                        <!-- Layer 1: Sapphire Touch Surface -->
+                        <g class="exp-layer" style="--ty: -270px;" data-layer="1">
+                            <path d="M 100 420 L 100 428 A 100 50 0 0 0 300 428 L 300 420 A 100 50 0 0 1 100 420 Z"
+                                fill="rgba(26, 26, 26, 0.04)" />
+                            <ellipse cx="200" cy="420" rx="100" ry="50" fill="rgba(255, 255, 255, 0.6)"
+                                stroke="rgba(26, 26, 26, 0.3)" stroke-width="1.5" />
+                            <ellipse cx="200" cy="420" rx="60" ry="30" fill="transparent"
+                                stroke="rgba(26, 26, 26, 0.15)" stroke-width="1" />
+                            <path d="M 120 410 Q 200 380 280 410" fill="none" stroke="rgba(26, 26, 26, 0.25)"
+                                stroke-width="2" stroke-linecap="round" />
+                        </g>
+                    </svg>
+
+                    <div class="exp-labels-col">
+                        <div class="exp-label" data-target="1">01 — Sapphire Touch Surface</div>
+                        <div class="exp-label" data-target="2">02 — Capacitive Sensor Array</div>
+                        <div class="exp-label" data-target="3">03 — Force-Sensitive Membrane</div>
+                        <div class="exp-label" data-target="4">04 — Haptic Feedback Motor</div>
+                        <div class="exp-label" data-target="5">05 — BLE 5.3 Radio Module</div>
+                        <div class="exp-label" data-target="6">06 — Li-Po Cell (180 mAh)</div>
+                        <div class="exp-label" data-target="7">07 — Titanium Chassis</div>
+                    </div>
+                </div>
+
+                <div class="engineering-stats stagger reveal">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="7">0</span>
+                        <span class="stat-label">Layers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="0">0</span>
+                        <span class="stat-label">Visible Screws</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="12">0</span>
+                        <span class="stat-label">Grams</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ WEAR ═══ -->
+    <section id="wear">
+        <div class="container">
+            <span class="section-badge reveal">Wear</span>
+            <h2 class="reveal" style="margin-top: 16px;">Three modes. One magnet.</h2>
+            <p class="body-lg reveal" style="transition-delay:0.1s;">Every accessory connects through the same magnetic
+                interface.</p>
+
+            <div class="wear-modes stagger reveal">
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Ring</div>
+                    <div class="wear-desc">Index finger. Always ready.</div>
+                </div>
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Clip</div>
+                    <div class="wear-desc">Collar mount. Discreet.</div>
+                </div>
+                <div class="wear-card">
+                    <div class="magnetic-demo">
+                        <div class="mag-dot"></div>
+                    </div>
+                    <div class="wear-name">Desk</div>
+                    <div class="wear-desc">Charging cradle. Stationary use.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SPECIFICATIONS ═══ -->
+    <section id="specs" class="section-alt">
+        <div class="container">
+            <span class="section-badge reveal">Specifications</span>
+            <h2 class="reveal" style="margin-top: 16px;">comma,01</h2>
+
+            <div class="dual-grid reveal">
+                <div class="col">
+                    <h3>Physical</h3>
+                    <table class="spec-table">
+                        <tr>
+                            <td>Dimensions</td>
+                            <td>28 × 28 × 8 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td>12 g</td>
+                        </tr>
+                        <tr>
+                            <td>Material</td>
+                            <td>Grade 5 Titanium</td>
+                        </tr>
+                        <tr>
+                            <td>Surface</td>
+                            <td>Sapphire Crystal</td>
+                        </tr>
+                        <tr>
+                            <td>Sealing</td>
+                            <td>Ultrasonic Weld</td>
+                        </tr>
+                        <tr>
+                            <td>Water Resistance</td>
+                            <td>IP67</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col">
+                    <h3>Electronics</h3>
+                    <table class="spec-table">
+                        <tr>
+                            <td>Connectivity</td>
+                            <td>BLE 5.3</td>
+                        </tr>
+                        <tr>
+                            <td>Battery</td>
+                            <td>180 mAh Li-Po</td>
+                        </tr>
+                        <tr>
+                            <td>Battery Life</td>
+                            <td>~7 days standby</td>
+                        </tr>
+                        <tr>
+                            <td>Charging</td>
+                            <td>Magnetic USB-C</td>
+                        </tr>
+                        <tr>
+                            <td>Sensors</td>
+                            <td>Capacitive + Force</td>
+                        </tr>
+                        <tr>
+                            <td>Feedback</td>
+                            <td>Linear Haptic</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="led-status-section reveal">
+                <span class="caption">Status LED</span>
+                <table class="spec-table">
+                    <tr>
+                        <td>Solid</td>
+                        <td>Connected & ready</td>
+                    </tr>
+                    <tr>
+                        <td>Pulse</td>
+                        <td>Voice active</td>
+                    </tr>
+                    <tr>
+                        <td>Flash</td>
+                        <td>Click registered</td>
+                    </tr>
+                    <tr>
+                        <td>Off</td>
+                        <td>Standby / sleeping</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ WAITLIST ═══ -->
+    <section id="waitlist" class="waitlist-section">
+        <div class="container">
+            <span class="section-badge reveal">Early Access</span>
+            <h2 class="reveal" style="margin-top: 16px;">Be the first to hold<br>comma,01.</h2>
+            <form class="waitlist-form reveal" id="waitlistForm">
+                <input type="email" placeholder="you@email.com" required>
+                <button type="submit">Join the Waitlist</button>
+            </form>
+            <p class="waitlist-success" id="waitlistSuccess">✓ You're on the list. We'll be in touch.</p>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <span class="small">A product of</span>
+                <a href="index.html">Scientific Typing™</a>
+                <span class="small">by</span>
+                <a href="https://inputscience.io" target="_blank" rel="noopener">Input Science</a>
+            </div>
+            <p class="copyright">© 2026 Input Science. All rights reserved.</p>
+        </div>
+        <p class="design-philosophy">Form follows function · Less but better · Honesty in design</p>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <script>
+        // ─── Scroll Progress (vertical, right edge) ───
+        const scrollProgress = document.getElementById('scrollProgress');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress.style.height = ((scrollTop / docHeight) * 100) + '%';
+            backToTop.classList.toggle('visible', scrollTop > 400);
+        }, { passive: true });
+
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ─── Smart Nav ───
+        let lastScroll = 0;
+        const mainNav = document.getElementById('mainNav');
+
+        window.addEventListener('scroll', () => {
+            const cur = window.scrollY;
+            mainNav.classList.toggle('hidden', cur > lastScroll && cur > 120);
+            lastScroll = cur;
+        }, { passive: true });
+
+        // ─── Section Dots ───
+        const dots = document.querySelectorAll('.section-nav .dot');
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+            dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+        }, { passive: true });
+
+        dots.forEach(d => d.addEventListener('click', () => {
+            document.getElementById(d.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
+        }));
+
+        // ─── Scroll Reveal ───
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger')
+            .forEach(el => revealObserver.observe(el));
+
+        // ═══ INTERACTIVE DEMO DEVICE ═══
+        const demoDevice = document.getElementById('demoDevice');
+        const demoLed = document.getElementById('demoLed');
+        const demoStatus = document.getElementById('demoStatus');
+        const waveform = document.getElementById('waveform');
+        const typedOutput = document.getElementById('typedOutput');
+
+        const samplePhrases = [
+            'Voice as a keyboard.',
+            'Touch to speak, release to type.',
+            'The physical hold is the interface.',
+            'No beginning. No end. No certainty.',
+            'comma,01 gives voice a body.',
+            'Controlled by a physical hold.',
+        ];
+
+        let holdTimer = null;
+        let clickCount = 0;
+        let clickTimer = null;
+        let isHolding = false;
+        let interactionLocked = false;
+        let currentPhrase = '';
+
+        function setStatus(text, active = false) {
+            demoStatus.textContent = text;
+            demoStatus.classList.toggle('active', active);
+        }
+
+        function setLed(on) { demoLed.classList.toggle('on', on); }
+
+        function typeText(text) {
+            typedOutput.textContent = '';
+            typedOutput.classList.add('has-text');
+            let i = 0;
+            function next() {
+                if (i <= text.length) {
+                    typedOutput.textContent = text.slice(0, i) + (i < text.length ? '█' : '');
+                    i++;
+                    setTimeout(next, 20 + Math.random() * 20);
+                }
+            }
+            next();
+        }
+
+        demoDevice.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if (interactionLocked) return;
+            holdTimer = setTimeout(() => {
+                isHolding = true;
+                interactionLocked = true;
+                demoDevice.classList.add('touching', 'pressing');
+                setLed(true);
+                setStatus('Listening...', true);
+                waveform.classList.add('active');
+                currentPhrase = samplePhrases[Math.floor(Math.random() * samplePhrases.length)];
+                activateCard('touch');
+                clickCount = 0;
+                clearTimeout(clickTimer);
+            }, 250);
+        });
+
+        demoDevice.addEventListener('mouseup', () => {
+            clearTimeout(holdTimer);
+            if (isHolding) {
+                isHolding = false;
+                demoDevice.classList.remove('touching', 'pressing');
+                waveform.classList.remove('active');
+                setStatus('Committed', true);
+                setLed(false);
+                activateCard('release');
+                typeText(currentPhrase);
+                setTimeout(() => { setStatus('Ready'); interactionLocked = false; }, 2000);
+            } else {
+                if (!interactionLocked) handleClick();
+            }
+        });
+
+        demoDevice.addEventListener('contextmenu', e => e.preventDefault());
+        demoDevice.addEventListener('touchstart', (e) => { e.preventDefault(); demoDevice.dispatchEvent(new MouseEvent('mousedown')); });
+        demoDevice.addEventListener('touchend', (e) => { e.preventDefault(); demoDevice.dispatchEvent(new MouseEvent('mouseup')); });
+
+        function handleClick() {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                if (clickCount === 1) {
+                    activateCard('click');
+                    setStatus('Click → Action', true);
+                    setLed(true);
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (clickCount === 2) {
+                    activateCard('double');
+                    setStatus('Double → Select', true);
+                    setLed(true);
+                    if (typedOutput.textContent) {
+                        typedOutput.style.background = 'rgba(232,93,42,0.06)';
+                        setTimeout(() => { typedOutput.style.background = ''; }, 1200);
+                    }
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (clickCount >= 3) {
+                    activateCard('triple');
+                    setStatus('Triple → Delete', true);
+                    setLed(true);
+                    typedOutput.textContent = '';
+                    typedOutput.classList.remove('has-text');
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                }
+                clickCount = 0;
+            }, 300);
+        }
+
+        // ─── Interaction Cards ───
+        const interactionCards = document.querySelectorAll('.interaction-card');
+
+        function activateCard(action) {
+            interactionCards.forEach(c => c.classList.remove('active'));
+            const card = document.querySelector(`[data-action="${action}"]`);
+            if (card) {
+                card.classList.add('active');
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                const rect = card.getBoundingClientRect();
+                ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.marginLeft = -(Math.max(rect.width, rect.height) / 2) + 'px';
+                ripple.style.marginTop = -(Math.max(rect.width, rect.height) / 2) + 'px';
+                card.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+                setTimeout(() => card.classList.remove('active'), 1500);
+            }
+        }
+
+        interactionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const action = card.dataset.action;
+                activateCard(action);
+                if (action === 'touch') {
+                    demoDevice.classList.add('touching');
+                    setLed(true);
+                    setStatus('Listening...', true);
+                    waveform.classList.add('active');
+                    setTimeout(() => {
+                        demoDevice.classList.remove('touching');
+                        waveform.classList.remove('active');
+                        setStatus('Committed', true);
+                        currentPhrase = samplePhrases[Math.floor(Math.random() * samplePhrases.length)];
+                        typeText(currentPhrase);
+                        activateCard('release');
+                        setLed(false);
+                        setTimeout(() => setStatus('Ready'), 2000);
+                    }, 1500);
+                } else if (action === 'click') {
+                    setStatus('Click → Action', true);
+                    setLed(true);
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (action === 'double') {
+                    setStatus('Double → Select', true);
+                    setLed(true);
+                    if (typedOutput.textContent) {
+                        typedOutput.style.background = 'rgba(232,93,42,0.06)';
+                        setTimeout(() => typedOutput.style.background = '', 1200);
+                    }
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                } else if (action === 'triple') {
+                    setStatus('Triple → Delete', true);
+                    setLed(true);
+                    typedOutput.textContent = '';
+                    typedOutput.classList.remove('has-text');
+                    setTimeout(() => { setStatus('Ready'); setLed(false); }, 1200);
+                }
+            });
+        });
+
+        // ─── Engineering: Scroll-Scrubbing SVG ───
+        const explodeContainer = document.getElementById('explodedView');
+        if (explodeContainer) {
+            let rafId = null;
+
+            function scrubExplosion() {
+                const track = document.getElementById('engineering');
+                const rect = track.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const scrollableDistance = Math.max(1, rect.height - windowHeight);
+                let rawProgress = -rect.top / scrollableDistance;
+                let progress = Math.max(0, Math.min(1, rawProgress));
+                progress = 1 - Math.pow(1 - progress, 2.5);
+
+                explodeContainer.style.setProperty('--explode-progress', progress.toFixed(4));
+
+                const centerLine = document.querySelector('.exp-center-line');
+                if (centerLine) {
+                    centerLine.setAttribute('y2', 420 - (420 - 150) * progress);
+                }
+
+                if (progress > 0.98) {
+                    explodeContainer.classList.add('fully-exploded');
+                } else {
+                    explodeContainer.classList.remove('fully-exploded');
+                }
+                rafId = null;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!rafId) rafId = requestAnimationFrame(scrubExplosion);
+            }, { passive: true });
+
+            scrubExplosion();
+
+            // Hover interactions
+            const expLayers = document.querySelectorAll('.exp-layer');
+            const expLabels = document.querySelectorAll('.exp-label');
+
+            expLayers.forEach(layer => {
+                layer.addEventListener('mouseenter', () => {
+                    document.querySelector(`.exp-label[data-target="${layer.dataset.layer}"]`)?.classList.add('highlight');
+                });
+                layer.addEventListener('mouseleave', () => {
+                    document.querySelector(`.exp-label[data-target="${layer.dataset.layer}"]`)?.classList.remove('highlight');
+                });
+            });
+
+            expLabels.forEach(label => {
+                label.addEventListener('mouseenter', () => {
+                    const id = label.dataset.target;
+                    document.querySelector(`.exp-layer[data-layer="${id}"]`)?.style.setProperty('filter', 'drop-shadow(0 0 20px rgba(232,93,42,0.3)) brightness(1.05)');
+                    label.classList.add('highlight');
+                });
+                label.addEventListener('mouseleave', () => {
+                    const id = label.dataset.target;
+                    document.querySelector(`.exp-layer[data-layer="${id}"]`)?.style.setProperty('filter', '');
+                    label.classList.remove('highlight');
+                });
+            });
+        }
+
+        // ─── Counter Animation ───
+        const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    let current = 0;
+                    const step = Math.max(1, Math.floor(target / 30));
+                    const interval = setInterval(() => {
+                        current += step;
+                        if (current >= target) { current = target; clearInterval(interval); }
+                        el.textContent = current;
+                    }, 40);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => counterObserver.observe(el));
+
+        // ─── Waitlist ───
+        const waitlistForm = document.getElementById('waitlistForm');
+        const waitlistSuccess = document.getElementById('waitlistSuccess');
+
+        waitlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = waitlistForm.querySelector('input').value;
+            const entries = JSON.parse(localStorage.getItem('st_waitlist') || '[]');
+            entries.push({ email, timestamp: new Date().toISOString() });
+            localStorage.setItem('st_waitlist', JSON.stringify(entries));
+            waitlistForm.style.display = 'none';
+            waitlistSuccess.classList.add('show');
+        });
+
+        if (localStorage.getItem('st_waitlist')) {
+            const entries = JSON.parse(localStorage.getItem('st_waitlist'));
+            if (entries.length > 0) {
+                waitlistForm.style.display = 'none';
+                waitlistSuccess.classList.add('show');
+            }
+        }
+
+        // ─── Console ───
+        console.log(
+            '%c , %c comma,01 — Touch to speak. Release to type. %c Rams Edition',
+            'font-size: 32px; font-weight: 800; color: #E85D2A; background: #F0EFE9; padding: 8px 4px 8px 16px;',
+            'font-size: 12px; font-weight: 400; color: #555; background: #F0EFE9; padding: 8px 0;',
+            'font-size: 10px; font-weight: 600; color: #E85D2A; background: #F0EFE9; padding: 8px 16px 8px 4px;'
+        );
+    </script>
+
+</body>
+
+</html>
