@@ -287,9 +287,10 @@
             }
         };
 
-        let currentLang = 'en';
+        let currentLang = localStorage.getItem('comma_lang') || 'en';
         function setLang(lang) {
             currentLang = lang;
+            localStorage.setItem('comma_lang', lang);
             document.body.setAttribute('data-lang', lang);
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -306,6 +307,7 @@
             });
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
         }
+        setLang(currentLang);
         document.getElementById('langToggle').addEventListener('click', () => setLang(currentLang === 'en' ? 'zh' : 'en'));
     </script>
 
