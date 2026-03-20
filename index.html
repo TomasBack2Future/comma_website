@@ -646,7 +646,7 @@
             typeTimeout = setTimeout(tick, 200);
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
         }
-        setLang(currentLang);
+        
         document.getElementById('langToggle').addEventListener('click', () => setLang(currentLang === 'en' ? 'zh' : 'en'));
 
         // ─── Scroll Progress ───
@@ -764,6 +764,9 @@
         });
 
         console.log('%c , %c Comma — Voice as a Keyboard', 'font-size:32px;font-weight:800;color:#fff;background:#000;padding:8px 4px 8px 16px;', 'font-size:12px;font-weight:400;color:#888;background:#000;padding:8px 16px 8px 0;');
+
+        // Initialize language after all DOM elements and variables are ready
+        setLang(currentLang);
     </script>
 
 </body>
