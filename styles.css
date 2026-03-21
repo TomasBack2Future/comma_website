@@ -3,13 +3,30 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
+/* ─── Accessibility: Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .reveal, .reveal-scale, .stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .method-word {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
 /* ─── Design Tokens ─── */
 :root {
     --black: #000000;
     --white: #FFFFFF;
     --gray-dim: rgba(255, 255, 255, 0.12);
     --gray-mid: rgba(255, 255, 255, 0.4);
-    --gray-text: rgba(255, 255, 255, 0.7);
+    --gray-text: rgba(255, 255, 255, 0.85);
     --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
     --grid: 8px;
@@ -30,6 +47,7 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    color-scheme: dark;
 }
 
 body {
@@ -57,7 +75,7 @@ body {
 .section-nav .dot {
     width: 8px; height: 8px; border-radius: 50%;
     border: 1px solid var(--white); background: transparent;
-    cursor: pointer; transition: all var(--dur) var(--ease); position: relative;
+    cursor: pointer; transition: background var(--dur) var(--ease), transform var(--dur) var(--ease); position: relative;
 }
 .section-nav .dot.active { background: var(--white); transform: scale(1.4); }
 .section-nav .dot::after {
@@ -94,6 +112,10 @@ nav .links a {
     font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em;
     border-bottom: none; text-decoration: none; position: relative;
     transition: opacity var(--dur);
+    padding: 12px 0;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
 }
 nav .links a:hover { opacity: 0.6; }
 nav .links a::after {
@@ -107,8 +129,8 @@ nav .links a:hover::after { width: 100%; }
 .lang-toggle {
     font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em;
     background: transparent; border: 1px solid var(--gray-dim);
-    color: var(--white); padding: 4px 12px; cursor: pointer;
-    transition: all var(--dur) var(--ease);
+    color: var(--white); padding: 10px 16px; cursor: pointer;
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .lang-toggle:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
 
@@ -117,7 +139,7 @@ nav .links a:hover::after { width: 100%; }
 .spacer-nav { height: calc(var(--grid) * 7); }
 
 /* ─── Links ─── */
-a { color: var(--white); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); transition: all var(--dur) var(--ease); }
+a { color: var(--white); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); transition: opacity var(--dur) var(--ease), border-bottom-color var(--dur) var(--ease); }
 a:hover { opacity: 0.7; border-bottom-color: var(--white); }
 
 /* ─── Sections ─── */
@@ -256,8 +278,8 @@ h3 { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 500; line-h
 .feature-card:hover::before { opacity: 1; }
 .feature-icon-wrap { width: 48px; height: 48px; margin-bottom: calc(var(--grid) * 2); }
 .feature-icon-svg { width: 48px; height: 48px; }
-.feature-card h3 { font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.04em; font-weight: 500; margin-bottom: calc(var(--grid) * 1); }
-.feature-card p { font-size: 0.8rem; color: var(--gray-text); line-height: 1.5; }
+.feature-card h3 { font-family: var(--font-mono); font-size: 1rem; letter-spacing: 0.04em; font-weight: 500; margin-bottom: calc(var(--grid) * 1); }
+.feature-card p { font-size: 0.875rem; color: var(--gray-text); line-height: 1.5; }
 
 /* ─── Shortcut Grid ─── */
 .shortcut-grid { display: flex; flex-direction: column; gap: calc(var(--grid) * 2); }
@@ -283,7 +305,7 @@ h3 { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 500; line-h
 /* ─── What It Is / Is Not Grid ─── */
 .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--grid) * 6); margin-top: calc(var(--grid) * 6); }
 .dual-grid .col h3 {
-    font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;
+    font-family: var(--font-mono); font-size: 0.875rem; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--gray-text);
     padding-bottom: calc(var(--grid) * 2); border-bottom: 1px solid var(--gray-dim);
     margin-bottom: calc(var(--grid) * 3);
@@ -305,7 +327,7 @@ h3 { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 500; line-h
     font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500;
     padding: calc(var(--grid) * 1.5) calc(var(--grid) * 3);
     border: 1px solid var(--white); background: transparent;
-    color: var(--white); cursor: pointer; transition: all var(--dur) var(--ease);
+    color: var(--white); cursor: pointer; transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
     text-decoration: none; border-bottom: 1px solid var(--white);
     position: relative; overflow: hidden;
 }
@@ -348,11 +370,11 @@ footer .copyright { font-family: var(--font-mono); font-size: 0.7rem; color: var
 /* ─── Back to Top ─── */
 .back-to-top {
     position: fixed; bottom: calc(var(--grid) * 4); right: calc(var(--grid) * 4);
-    width: 40px; height: 40px; border: 1px solid var(--gray-dim);
+    width: 44px; height: 44px; border: 1px solid var(--gray-dim);
     background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
     color: var(--white); display: flex; align-items: center; justify-content: center;
     cursor: pointer; z-index: 90; opacity: 0; pointer-events: none;
-    transform: translateY(10px); transition: all var(--dur) var(--ease);
+    transform: translateY(10px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .back-to-top:hover { background: var(--white); color: var(--black); border-color: var(--white); }
