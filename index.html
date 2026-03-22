@@ -12,9 +12,15 @@
     <link rel="icon" href="app-icon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" defer></script>
 </head>
 
 <body data-lang="en">
+
+    <div class="cursor-dot" id="cursorDot"></div>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -32,16 +38,17 @@
     <!-- Navigation -->
     <nav id="mainNav">
         <div class="container">
-            <a href="index.html" class="brand">
+            <a href="index.html" class="brand" data-magnetic>
                 <img src="app-icon.png" alt="Comma" class="brand-icon">
                 <span>Comma</span>
             </a>
             <div class="links">
-                <a href="release.html"><span data-i18n="nav_release">Release</span></a>                <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+                <a href="release.html"><span data-i18n="nav_release">Release</span></a>
+                <button class="lang-toggle" id="langToggle" aria-label="Switch language" data-magnetic>
                     <span class="lang-label" data-lang="en">中文</span>
                     <span class="lang-label" data-lang="zh" style="display:none;">EN</span>
                 </button>
-                <a href="#install" class="btn btn-filled"><span data-i18n="nav_download">Download</span></a>
+                <a href="#install" class="btn btn-filled" data-magnetic><span data-i18n="nav_download">Download</span></a>
             </div>
         </div>
     </nav>
@@ -52,76 +59,46 @@
     <section class="hero" id="hero">
         <div class="hero-bg-grid"></div>
 
-        <!-- Canvas: 3D perspective warp-rush of code/text/commas -->
-        <!-- Language Matrix: Floating code, text, commas that connect everything -->
         <svg class="hero-matrix-svg" id="heroMatrix" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></svg>
 
-        <div class="container" style="position:relative; z-index:1;">
-            <div class="hero-logo-wrap reveal">
-                <img src="app-icon.png" alt="Comma" class="hero-logo">
-                <svg class="logo-pulse" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1">
-                        <animate attributeName="r" values="50;58;50" dur="3s" repeatCount="indefinite"/>
-                        <animate attributeName="stroke-opacity" values="0.15;0.03;0.15" dur="3s" repeatCount="indefinite"/>
-                    </circle>
-                    <circle cx="60" cy="60" r="56" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5">
-                        <animate attributeName="r" values="56;66;56" dur="4s" repeatCount="indefinite"/>
-                        <animate attributeName="stroke-opacity" values="0.08;0.01;0.08" dur="4s" repeatCount="indefinite"/>
-                    </circle>
-                </svg>
+        <div class="hero-content" style="position:relative; z-index:1;">
+            <div class="container">
+                <p class="hero-label anim-hidden">Scientific Typing™</p>
+                <h1 class="hero-headline anim-hidden" data-i18n="hero_title">Voice as a Keyboard,</h1>
+                <p class="hero-sub anim-hidden" data-i18n="hero_sub">Hold, Speak, Done</p>
             </div>
-
-            <p class="brand-title reveal">Scientific Typing™</p>
-            <h1 id="heroTitle">
-                <span class="hero-typed" id="heroTyped"></span><span class="cursor"></span>
-            </h1>
-            <p class="subtitle mt-3 reveal" style="transition-delay: 0.6s;">
-                <span data-i18n="hero_sub">Hold, Speak, Done</span>
-            </p>
-        </div>
-
-        <!-- Sound Wave -->
-        <div class="hero-wave-wrap">
-            <svg class="hero-wave" viewBox="0 0 1200 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <defs>
-                    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
-                        <stop offset="30%" stop-color="#fff" stop-opacity="0.15"/>
-                        <stop offset="50%" stop-color="#fff" stop-opacity="0.3"/>
-                        <stop offset="70%" stop-color="#fff" stop-opacity="0.15"/>
-                        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-                <path id="wavePath1" fill="none" stroke="url(#waveGrad)" stroke-width="1.5"/>
-                <path id="wavePath2" fill="none" stroke="url(#waveGrad)" stroke-width="1" opacity="0.5"/>
-                <path id="wavePath3" fill="none" stroke="url(#waveGrad)" stroke-width="0.5" opacity="0.3"/>
-            </svg>
         </div>
 
         <div class="scroll-hint">
-            <div class="line"></div>
-            <span class="label">Scroll</span>
+            <span class="label">SCROLL</span>
+            <div class="scroll-line"></div>
         </div>
     </section>
 
     <!-- ═══ THE PROBLEM ═══ -->
-    <section id="problem">
+    <section class="section-problem" id="problem">
         <div class="container">
-            <p class="label reveal" data-i18n="problem_label">The Problem</p>
-            <ul class="problem-list mt-6 stagger reveal">
-                <li data-i18n="problem_1">Typing breaks flow.</li>
-                <li data-i18n="problem_2">Switching apps kills momentum.</li>
-                <li data-i18n="problem_3">Copy-paste is not a workflow.</li>
-            </ul>
+            <div class="section-header">
+                <p class="label" data-i18n="problem_label">The Problem</p>
+                <div class="header-line"></div>
+            </div>
+            <div class="problem-statements mt-6">
+                <p class="statement" data-i18n="problem_1">Typing breaks flow.</p>
+                <p class="statement" data-i18n="problem_2">Switching apps kills momentum.</p>
+                <p class="statement" data-i18n="problem_3">Copy-paste is not a workflow.</p>
+            </div>
         </div>
     </section>
 
     <!-- ═══ THE METHOD ═══ -->
-    <section id="method" class="text-center">
+    <section class="section-method text-center" id="method">
         <div class="container">
-            <p class="label reveal" data-i18n="method_label">The Method</p>
+            <div class="section-header">
+                <p class="label" data-i18n="method_label">The Method</p>
+                <div class="header-line"></div>
+            </div>
 
-            <div class="method-visual mt-6 reveal-scale">
+            <div class="method-visual mt-6">
                 <svg class="fn-key-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="keyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -154,16 +131,20 @@
                 <span class="method-word" data-i18n="method_2">Speak.</span>
                 <span class="method-word" data-i18n="method_3">Done.</span>
             </div>
+            <div class="method-progress"><div class="method-progress-fill"></div></div>
         </div>
     </section>
 
     <!-- ═══ FEATURES ═══ -->
-    <section id="features">
+    <section class="section-features" id="features">
         <div class="container">
-            <p class="label reveal" data-i18n="features_label">Features</p>
-            <p class="subtitle mt-3 reveal" data-i18n="features_sub">Everything you need. Nothing you don't.</p>
+            <div class="section-top">
+                <p class="label" data-i18n="features_label">Features</p>
+                <p class="subtitle mt-3" data-i18n="features_sub">Everything you need. Nothing you don't.</p>
+                <div class="feature-counter"><span class="current">01</span> / <span class="total">06</span></div>
+            </div>
 
-            <div class="feature-grid mt-6 stagger reveal">
+            <div class="features-track mt-6">
                 <div class="feature-card">
                     <div class="feature-icon-wrap">
                         <svg class="feature-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -244,9 +225,12 @@
     <!-- ═══ SHORTCUTS ═══ -->
     <section id="shortcuts">
         <div class="container">
-            <p class="label reveal" data-i18n="shortcuts_label">Keyboard Shortcuts</p>
-            <p class="subtitle mt-3 reveal" data-i18n="shortcuts_sub">One key to rule them all.</p>
-            <div class="shortcut-grid mt-6 stagger reveal">
+            <div class="section-header">
+                <p class="label" data-i18n="shortcuts_label">Keyboard Shortcuts</p>
+                <div class="header-line"></div>
+            </div>
+            <p class="subtitle mt-3" data-i18n="shortcuts_sub">One key to rule them all.</p>
+            <div class="shortcut-grid mt-6">
                 <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_dictate">Dictate (toggle)</span><span class="shortcut-desc" data-i18n="key_dictate_desc">Press to start, press again to stop</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/></circle></svg></div>
                 <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd><span class="key-plus">+</span><kbd>hold</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_ptt">Push-to-Talk</span><span class="shortcut-desc" data-i18n="key_ptt_desc">Hold to speak, release to type</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/></circle></svg></div>
                 <div class="shortcut-card"><div class="shortcut-keys"><kbd>fn</kbd><span class="key-plus">+</span><kbd>⇧</kbd></div><div class="shortcut-info"><span class="shortcut-action" data-i18n="key_translate">Translate</span><span class="shortcut-desc" data-i18n="key_translate_desc">Speak one language, output another</span></div><svg class="shortcut-indicator" viewBox="0 0 6 6"><circle cx="3" cy="3" r="2" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="1s"/></circle></svg></div>
@@ -258,7 +242,7 @@
     <!-- ═══ WHAT IT IS / IS NOT ═══ -->
     <section id="philosophy">
         <div class="container">
-            <div class="dual-grid reveal">
+            <div class="dual-grid">
                 <div class="col col-yes">
                     <h3 data-i18n="what_is">What it is</h3>
                     <ul>
@@ -281,50 +265,48 @@
         </div>
     </section>
 
+    <!-- ═══ MARQUEE BAND ═══ -->
+    <div class="marquee-band" aria-hidden="true">
+        <div class="marquee-track">
+            DOWNLOAD COMMA &mdash; VOICE AS A KEYBOARD &mdash; HOLD SPEAK DONE &mdash; DOWNLOAD COMMA &mdash; VOICE AS A KEYBOARD &mdash; HOLD SPEAK DONE &mdash; DOWNLOAD COMMA &mdash; VOICE AS A KEYBOARD &mdash; HOLD SPEAK DONE &mdash; DOWNLOAD COMMA &mdash; VOICE AS A KEYBOARD &mdash; HOLD SPEAK DONE &mdash;
+        </div>
+    </div>
+
     <!-- ═══ INSTALL ═══ -->
-    <section id="install">
+    <section class="section-install" id="install">
         <div class="container text-center">
-            <p class="label reveal" data-i18n="install_label">Get Started</p>
-            <h2 class="mt-4 reveal" data-i18n="install_title">Type without typing.</h2>
-            <p class="subtitle reveal" data-i18n="install_sub">macOS 12.0+ required</p>
-            <div class="install-visual mt-6 reveal-scale">
-                <svg class="download-svg" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-                    <circle cx="40" cy="40" r="35" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="220" stroke-dashoffset="220" stroke-linecap="round"><animate attributeName="stroke-dashoffset" values="220;0" dur="2s" fill="freeze"/></circle>
-                    <path d="M40,22 L40,50" stroke="white" stroke-width="2" stroke-linecap="round"><animate attributeName="d" values="M40,22 L40,46;M40,26 L40,50;M40,22 L40,46" dur="2s" repeatCount="indefinite"/></path>
-                    <path d="M30,42 L40,52 L50,42" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M30,38 L40,48 L50,38;M30,42 L40,52 L50,42;M30,38 L40,48 L50,38" dur="2s" repeatCount="indefinite"/></path>
-                    <line x1="26" y1="58" x2="54" y2="58" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="install-steps mt-6 reveal">
+            <p class="label" data-i18n="install_label">Get Started</p>
+            <h2 class="mt-4" data-i18n="install_title">Type without typing.</h2>
+            <p class="subtitle" data-i18n="install_sub">macOS 12.0+ required</p>
+            <div class="install-steps mt-6">
                 <div class="install-step"><span class="step-num">1</span><span data-i18n="step_1">Download the .dmg installer</span></div>
                 <div class="install-step"><span class="step-num">2</span><span data-i18n="step_2">Drag Comma.app into Applications</span></div>
                 <div class="install-step"><span class="step-num">3</span><span data-i18n="step_3">Launch — the onboarding guide walks you through</span></div>
             </div>
-            <a href="https://comma.agoralab.co/downloads/Comma.dmg" target="_blank" rel="noopener" class="btn btn-filled mt-6" style="display:inline-flex;"><span data-i18n="download_btn">Download for macOS</span></a>
+            <a href="https://comma.agoralab.co/downloads/Comma.dmg" target="_blank" rel="noopener" class="btn btn-filled mt-6" data-magnetic><span data-i18n="download_btn">Download for macOS</span></a>
         </div>
     </section>
 
     <!-- ═══ FAQ ═══ -->
     <section id="faq">
         <div class="container">
-            <h2 class="mt-4 reveal text-center" data-i18n="faq_title" style="margin-bottom: 2rem;">FAQ</h2>
-            <div class=”faq-list mt-6 reveal” style=”max-width: 800px; margin: 0 auto; text-align: left;”>
-                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
-                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q1”>1. Are Intel Macs supported?</h3>
-                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a1”>Currently (Phase 1), only Macs with Apple Silicon (M1/M2/M3, etc.) are supported. Support for Intel architecture is on our roadmap.</p>
+            <h2 class="mt-4 text-center" data-i18n="faq_title">FAQ</h2>
+            <div class="faq-list mt-6">
+                <div class="faq-item">
+                    <h3 data-i18n="faq_q1">1. Are Intel Macs supported?</h3>
+                    <p data-i18n="faq_a1">Currently (Phase 1), only Macs with Apple Silicon (M1/M2/M3, etc.) are supported. Support for Intel architecture is on our roadmap.</p>
                 </div>
-                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
-                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q2”>2. Why is there no response when I press the Fn key?</h3>
-                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a2”>Please check: 1. Go to “System Settings -> Privacy & Security -> Accessibility / Microphone” and ensure Comma is checked. 2. Ensure your Mac uses Apple Silicon. 3. Check if other apps are occupying the Fn key.</p>
+                <div class="faq-item">
+                    <h3 data-i18n="faq_q2">2. Why is there no response when I press the Fn key?</h3>
+                    <p data-i18n="faq_a2">Please check: 1. Go to "System Settings -> Privacy & Security -> Accessibility / Microphone" and ensure Comma is checked. 2. Ensure your Mac uses Apple Silicon. 3. Check if other apps are occupying the Fn key.</p>
                 </div>
-                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
-                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q3”>3. Will there be an iOS or Windows version?</h3>
-                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a3”>We are currently focused on perfecting the desktop productivity experience on Mac. The mobile version (iOS) is clearly on our roadmap and will follow once the desktop experience meets our standards.</p>
+                <div class="faq-item">
+                    <h3 data-i18n="faq_q3">3. Will there be an iOS or Windows version?</h3>
+                    <p data-i18n="faq_a3">We are currently focused on perfecting the desktop productivity experience on Mac. The mobile version (iOS) is clearly on our roadmap and will follow once the desktop experience meets our standards.</p>
                 </div>
-                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
-                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q4”>4. Why does the recognized text sometimes duplicate?</h3>
-                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a4”>Comma's speech engine streams text in real-time. In rare cases of network jitter, the “temporary streaming result” and the “final confirmed result” might briefly overlap. We are actively optimizing the alignment logic to prevent this.</p>
+                <div class="faq-item">
+                    <h3 data-i18n="faq_q4">4. Why does the recognized text sometimes duplicate?</h3>
+                    <p data-i18n="faq_a4">Comma's speech engine streams text in real-time. In rare cases of network jitter, the "temporary streaming result" and the "final confirmed result" might briefly overlap. We are actively optimizing the alignment logic to prevent this.</p>
                 </div>
             </div>
         </div>
@@ -332,6 +314,7 @@
 
     <!-- Footer -->
     <footer>
+        <div class="footer-watermark" aria-hidden="true">Comma</div>
         <div class="container">
             <div class="footer-links">
                 <a href="https://scientifictyping.com">Scientific Typing™</a>
@@ -344,10 +327,17 @@
 
     <script>
         // ═══════════════════════════════════════════════════
+        // BOOT
+        // ═══════════════════════════════════════════════════
+        document.body.classList.add('js-loaded');
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+        const isMobile = window.innerWidth < 768;
+
+        // ═══════════════════════════════════════════════════
         // LANGUAGE MATRIX — SVG Floating Particles
-        // Code tokens, text fragments, and commas drift softly.
-        // Commas act as gravitational nodes that attract and
-        // connect code↔text with dashed data-flow lines.
         // ═══════════════════════════════════════════════════
 
         (function initLanguageMatrix() {
@@ -491,6 +481,7 @@
             en: {
                 nav_release: 'Release',
                 nav_download: 'Download',
+                hero_title: 'Voice as a Keyboard,',
                 hero_sub: 'Hold, Speak, Done',
                 problem_label: 'The Problem',
                 problem_1: 'Typing breaks flow.',
@@ -554,6 +545,7 @@
             zh: {
                 nav_release: '版本动态',
                 nav_download: '下载',
+                hero_title: '语音即键盘，',
                 hero_sub: '按键，说话，完成',
                 problem_label: '痛点',
                 problem_1: '打字打断心流。',
@@ -608,15 +600,25 @@
                 faq_q1: '1. 支持 Intel 芯片的 Mac 吗？',
                 faq_a1: '目前（Phase 1）仅支持配备 Apple Silicon（M1/M2/M3 等）的 Mac 机型。Intel 架构版本的支持已列入开发计划，敬请期待。',
                 faq_q2: '2. 为什么按 Fn 键唤醒没有反应？',
-                faq_a2: '请排查以下三点：1. 进入“系统设置 -> 隐私与安全性 -> 辅助功能 / 麦克风”，确保已勾选 Comma。2. 确认您的设备是 M 系列芯片。3. 检查是否有其他软件占用了 Fn 键。',
+                faq_a2: '请排查以下三点：1. 进入"系统设置 -> 隐私与安全性 -> 辅助功能 / 麦克风"，确保已勾选 Comma。2. 确认您的设备是 M 系列芯片。3. 检查是否有其他软件占用了 Fn 键。',
                 faq_q3: '3. 会有 iOS 或 Windows 版本吗？',
                 faq_a3: '现阶段我们集中精力打磨 Mac 桌面端的极致生产力体验。移动端（iOS）已在规划路线图中，桌面端体验达标后即会推进。',
                 faq_q4: '4. 为什么有时候识别的内容会重复出现两次？',
-                faq_a4: 'Comma 支持极速流式输出（边听边上屏）。在极少数网络抖动的情况下，屏幕上的“临时流式结果”与“最终确认结果”可能会发生短时的渲染重叠。底层的对齐逻辑正在持续优化中。',
+                faq_a4: 'Comma 支持极速流式输出（边听边上屏）。在极少数网络抖动的情况下，屏幕上的"临时流式结果"与"最终确认结果"可能会发生短时的渲染重叠。底层的对齐逻辑正在持续优化中。',
             }
         };
 
         let currentLang = localStorage.getItem('comma_lang') || 'en';
+        let splitInstance = null;
+
+        function reSplitHeadline() {
+            const headline = document.querySelector('.hero-headline');
+            if (!headline || typeof SplitType === 'undefined') return;
+            if (splitInstance) splitInstance.revert();
+            splitInstance = new SplitType(headline, { types: 'chars' });
+            return splitInstance;
+        }
+
         function setLang(lang) {
             currentLang = lang;
             localStorage.setItem('comma_lang', lang);
@@ -628,16 +630,15 @@
             document.querySelectorAll('.lang-label').forEach(el => {
                 el.style.display = el.getAttribute('data-lang') === lang ? 'inline' : 'none';
             });
-            clearTimeout(typeTimeout);
-            heroLines = lang === 'zh'
-                ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
-                : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
-            lineIdx = 0; charIdx = 0; erasing = false;
-            heroTypedEl.textContent = '';
-            typeTimeout = setTimeout(tick, 200);
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            // Re-split headline for SplitType after text change
+            reSplitHeadline();
+            // Refresh ScrollTrigger calculations after layout change
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
         }
-        
+
         document.getElementById('langToggle').addEventListener('click', () => setLang(currentLang === 'en' ? 'zh' : 'en'));
 
         // ─── Scroll Progress ───
@@ -677,87 +678,320 @@
             });
         });
 
-        // ─── Scroll Reveal ───
-        const revealEls = document.querySelectorAll('.reveal, .reveal-scale, .stagger');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-        revealEls.forEach(el => revealObserver.observe(el));
-
-        // ─── Hero Typewriter (rotate: type → pause → erase → next, loop) ───
-        const heroTypedEl = document.getElementById('heroTyped');
-        let heroLines = ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
-        let lineIdx = 0, charIdx = 0, erasing = false;
-        let typeTimeout;
-
-        function tick() {
-            const text = heroLines[lineIdx];
-            if (!erasing) {
-                // Typing forward
-                if (charIdx <= text.length) {
-                    heroTypedEl.textContent = text.slice(0, charIdx);
-                    charIdx++;
-                    typeTimeout = setTimeout(tick, 55 + Math.random() * 35);
-                } else {
-                    // Finished typing — pause, then start erasing
-                    typeTimeout = setTimeout(() => { erasing = true; tick(); }, 1800);
-                }
-            } else {
-                // Erasing backward
-                if (charIdx > 0) {
-                    charIdx--;
-                    heroTypedEl.textContent = text.slice(0, charIdx);
-                    typeTimeout = setTimeout(tick, 30);
-                } else {
-                    // Finished erasing — move to next line
-                    erasing = false;
-                    lineIdx = (lineIdx + 1) % heroLines.length;
-                    typeTimeout = setTimeout(tick, 400);
-                }
-            }
-        }
-        typeTimeout = setTimeout(tick, 400);
-
-        // ─── Method Words ───
-        const methodSection = document.getElementById('method');
-        const methodWords = document.querySelectorAll('.method-word');
-        const methodObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    methodWords.forEach((w, i) => setTimeout(() => w.classList.add('active'), i * 250));
-                    methodObserver.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        methodObserver.observe(methodSection);
-
-        // ─── Sound Wave ───
-        function genWave(time, off, amp) {
-            let d = 'M0,40';
-            for (let x = 0; x <= 1200; x += 4) {
-                const y = 40 + Math.sin(x*0.008+time+off)*amp + Math.sin(x*0.015+time*1.3+off)*(amp*0.5) + Math.sin(x*0.003+time*0.7)*(amp*0.3);
-                d += ` L${x},${y.toFixed(2)}`;
-            }
-            return d;
-        }
-        const w1=document.getElementById('wavePath1'), w2=document.getElementById('wavePath2'), w3=document.getElementById('wavePath3');
-        let wt = 0;
-        function animW() { wt+=0.03; if(w1)w1.setAttribute('d',genWave(wt,0,12)); if(w2)w2.setAttribute('d',genWave(wt,2,8)); if(w3)w3.setAttribute('d',genWave(wt,4,6)); requestAnimationFrame(animW); }
-        animW();
-
         // ─── Feature Card Hover Glow ───
         document.querySelectorAll('.feature-card').forEach(card => {
             card.addEventListener('mousemove', e => {
                 const r = card.getBoundingClientRect();
-                card.style.setProperty('--mx', ((e.clientX-r.left)/r.width)*100+'%');
-                card.style.setProperty('--my', ((e.clientY-r.top)/r.height)*100+'%');
+                card.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+                card.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
             });
         });
 
-        console.log('%c , %c Comma — Voice as a Keyboard', 'font-size:32px;font-weight:800;color:#fff;background:#000;padding:8px 4px 8px 16px;', 'font-size:12px;font-weight:400;color:#888;background:#000;padding:8px 16px 8px 0;');
+        // ═══════════════════════════════════════════════════
+        // GSAP + LENIS + SCROLLTRIGGER
+        // ═══════════════════════════════════════════════════
 
-        // Initialize language after all DOM elements and variables are ready
+        function initGSAPAnimations() {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            // ─── Lenis Smooth Scroll ───
+            let lenis = null;
+            if (!prefersReducedMotion && !isCoarsePointer) {
+                lenis = new Lenis({ duration: 1.2 });
+                lenis.on('scroll', ScrollTrigger.update);
+                gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+                gsap.ticker.lagSmoothing(0);
+            }
+
+            // ─── Custom Cursor ───
+            if (isFinePointer && !prefersReducedMotion) {
+                const cursorDot = document.getElementById('cursorDot');
+                if (cursorDot) {
+                    const xTo = gsap.quickTo(cursorDot, 'x', { duration: 0.3, ease: 'power3' });
+                    const yTo = gsap.quickTo(cursorDot, 'y', { duration: 0.3, ease: 'power3' });
+
+                    window.addEventListener('mousemove', (e) => {
+                        xTo(e.clientX);
+                        yTo(e.clientY);
+                    });
+
+                    const interactiveEls = document.querySelectorAll('a, button, kbd, .feature-card, .shortcut-card, .faq-item, [data-magnetic]');
+                    interactiveEls.forEach(el => {
+                        el.addEventListener('mouseenter', () => cursorDot.classList.add('cursor-hover'));
+                        el.addEventListener('mouseleave', () => cursorDot.classList.remove('cursor-hover'));
+                    });
+
+                    cursorDot.style.opacity = '1';
+                }
+            }
+
+            // ─── Magnetic Hover ───
+            if (isFinePointer && !prefersReducedMotion) {
+                document.querySelectorAll('[data-magnetic]').forEach(el => {
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const cx = rect.left + rect.width / 2;
+                        const cy = rect.top + rect.height / 2;
+                        const dx = (e.clientX - cx) * 0.2;
+                        const dy = (e.clientY - cy) * 0.2;
+                        gsap.to(el, { x: dx, y: dy, duration: 0.3, ease: 'power2.out' });
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+                    });
+                });
+            }
+
+            // ─── Hero Animation Timeline ───
+            const heroHeadline = document.querySelector('.hero-headline');
+            const heroLabel = document.querySelector('.hero-label');
+            const heroSub = document.querySelector('.hero-sub');
+            const scrollHint = document.querySelector('.scroll-hint');
+            const heroContent = document.querySelector('.hero-content');
+
+            if (heroHeadline && typeof SplitType !== 'undefined') {
+                splitInstance = new SplitType(heroHeadline, { types: 'chars' });
+
+                const heroTl = gsap.timeline({ delay: 0.3 });
+
+                if (heroLabel) {
+                    heroTl.fromTo(heroLabel,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+                    );
+                }
+
+                if (splitInstance.chars && splitInstance.chars.length) {
+                    heroTl.fromTo(splitInstance.chars,
+                        { yPercent: 100, opacity: 0 },
+                        { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.03, ease: 'power3.out' },
+                        '-=0.4'
+                    );
+                }
+
+                if (heroSub) {
+                    heroTl.fromTo(heroSub,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+                        '-=0.3'
+                    );
+                }
+
+                if (scrollHint) {
+                    heroTl.fromTo(scrollHint,
+                        { opacity: 0 },
+                        { opacity: 1, duration: 1, ease: 'power2.out' },
+                        '-=0.2'
+                    );
+                    heroTl.fromTo('.scroll-line',
+                        { scaleY: 0 },
+                        { scaleY: 1, duration: 0.8, ease: 'power2.out', transformOrigin: 'top center' },
+                        '-=0.6'
+                    );
+                }
+            }
+
+            // Hero parallax on scroll
+            if (heroContent && !prefersReducedMotion) {
+                gsap.to(heroContent, {
+                    yPercent: -50,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '#hero',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: true
+                    }
+                });
+            }
+
+            // ─── Problem Section — Scrub reveal ───
+            const statements = gsap.utils.toArray('.statement');
+            if (statements.length) {
+                statements.forEach(st => {
+                    gsap.fromTo(st,
+                        { opacity: 0.15 },
+                        {
+                            opacity: 1,
+                            scrollTrigger: {
+                                trigger: st,
+                                start: 'top 80%',
+                                end: 'top 40%',
+                                scrub: true
+                            }
+                        }
+                    );
+                    gsap.to(st, {
+                        opacity: 0.15,
+                        scrollTrigger: {
+                            trigger: st,
+                            start: 'top 20%',
+                            end: 'top 0%',
+                            scrub: true
+                        }
+                    });
+                });
+            }
+
+            // ─── Method Section ───
+            const methodWords = gsap.utils.toArray('.method-word');
+            const methodProgressFill = document.querySelector('.method-progress-fill');
+
+            if (methodWords.length) {
+                if (isMobile) {
+                    // Mobile: simple stagger reveal
+                    gsap.fromTo(methodWords,
+                        { opacity: 0, y: 30 },
+                        {
+                            opacity: 1, y: 0,
+                            stagger: 0.2,
+                            duration: 0.6,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: '#method',
+                                start: 'top 70%'
+                            }
+                        }
+                    );
+                } else {
+                    // Desktop: pin and reveal one word at a time
+                    const methodTl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: '#method',
+                            start: 'top top',
+                            end: '+=300%',
+                            pin: true,
+                            scrub: 1
+                        }
+                    });
+
+                    methodWords.forEach((word, i) => {
+                        methodTl.fromTo(word,
+                            { opacity: 0.15, scale: 0.95 },
+                            { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' },
+                            i * 1.5
+                        );
+                        if (i < methodWords.length - 1) {
+                            methodTl.to(word,
+                                { opacity: 0.15, duration: 0.5 },
+                                i * 1.5 + 1.2
+                            );
+                        }
+                    });
+
+                    // Update progress bar
+                    if (methodProgressFill) {
+                        methodTl.fromTo(methodProgressFill,
+                            { scaleX: 0 },
+                            { scaleX: 1, duration: methodWords.length * 1.5, ease: 'none' },
+                            0
+                        );
+                    }
+                }
+            }
+
+            // ─── Features Section — Horizontal Scroll ───
+            const featuresTrack = document.querySelector('.features-track');
+            const featureCards = gsap.utils.toArray('.feature-card');
+            const featureCounter = document.querySelector('.feature-counter .current');
+
+            if (featuresTrack && featureCards.length) {
+                if (isMobile) {
+                    // Mobile: simple reveal
+                    gsap.fromTo(featureCards,
+                        { opacity: 0, y: 40 },
+                        {
+                            opacity: 1, y: 0,
+                            stagger: 0.1,
+                            duration: 0.6,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: '#features',
+                                start: 'top 70%'
+                            }
+                        }
+                    );
+                } else {
+                    // Desktop: horizontal scroll with pin
+                    const totalScrollWidth = featuresTrack.scrollWidth - window.innerWidth + 200;
+
+                    const featuresST = gsap.to(featuresTrack, {
+                        x: () => -totalScrollWidth,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '#features',
+                            start: 'top top',
+                            end: () => '+=' + totalScrollWidth,
+                            pin: true,
+                            scrub: 1,
+                            invalidateOnRefresh: true,
+                            onUpdate: (self) => {
+                                if (featureCounter) {
+                                    const idx = Math.min(
+                                        featureCards.length,
+                                        Math.floor(self.progress * featureCards.length) + 1
+                                    );
+                                    featureCounter.textContent = String(idx).padStart(2, '0');
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // ─── General Reveals ───
+            const revealTargets = gsap.utils.toArray('.section-header, .shortcut-card, .dual-grid .col, .faq-item, .install-step, .section-top, .method-visual');
+            revealTargets.forEach(el => {
+                gsap.from(el, {
+                    y: 60,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none'
+                    }
+                });
+            });
+
+            // Section subtitles and labels outside section-header
+            gsap.utils.toArray('#shortcuts .subtitle, #faq h2, .section-install .label, .section-install h2, .section-install .subtitle').forEach(el => {
+                gsap.from(el, {
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.7,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none'
+                    }
+                });
+            });
+        }
+
+        // Wait for all deferred scripts to load then initialize
+        function waitForLibs(cb) {
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof SplitType !== 'undefined' && typeof Lenis !== 'undefined') {
+                cb();
+            } else {
+                setTimeout(() => waitForLibs(cb), 50);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => waitForLibs(initGSAPAnimations));
+        } else {
+            waitForLibs(initGSAPAnimations);
+        }
+
+        // Initialize language after all DOM elements are ready
         setLang(currentLang);
+
+        console.log('%c , %c Comma — Voice as a Keyboard', 'font-size:32px;font-weight:800;color:#fff;background:#000;padding:8px 4px 8px 16px;', 'font-size:12px;font-weight:400;color:#888;background:#000;padding:8px 16px 8px 0;');
     </script>
 
 </body>
