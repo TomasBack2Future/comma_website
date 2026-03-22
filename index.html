@@ -309,34 +309,22 @@
     <section id="faq">
         <div class="container">
             <h2 class="mt-4 reveal text-center" data-i18n="faq_title" style="margin-bottom: 2rem;">FAQ</h2>
-            <div class="faq-list mt-6 reveal" style="max-width: 800px; margin: 0 auto; text-align: left;">
-                <div class="faq-item" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">1. 支持 Intel 芯片的 Mac 吗？/ Are Intel Macs supported?</h3>
-                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
-                        <strong>中文</strong>：目前（Phase 1）仅支持配备 Apple Silicon（M1/M2/M3 等）的 Mac 机型。Intel 架构版本的支持已列入开发计划，敬请期待。<br>
-                        <strong>English</strong>：Currently (Phase 1), only Macs with Apple Silicon (M1/M2/M3, etc.) are supported. Support for Intel architecture is on our roadmap.
-                    </p>
+            <div class=”faq-list mt-6 reveal” style=”max-width: 800px; margin: 0 auto; text-align: left;”>
+                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
+                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q1”>1. Are Intel Macs supported?</h3>
+                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a1”>Currently (Phase 1), only Macs with Apple Silicon (M1/M2/M3, etc.) are supported. Support for Intel architecture is on our roadmap.</p>
                 </div>
-                <div class="faq-item" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2. 为什么按 Fn 键唤醒没有反应？/ Why is there no response when I press the Fn key?</h3>
-                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
-                        <strong>中文</strong>：请排查以下三点：1. 进入“系统设置 -> 隐私与安全性 -> 辅助功能 / 麦克风”，确保已勾选 Comma。2. 确认您的设备是 M 系列芯片。3. 检查是否有其他软件占用了 Fn 键。<br>
-                        <strong>English</strong>：Please check: 1. Go to "System Settings -> Privacy & Security -> Accessibility / Microphone" and ensure Comma is checked. 2. Ensure your Mac uses Apple Silicon. 3. Check if other apps are occupying the Fn key.
-                    </p>
+                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
+                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q2”>2. Why is there no response when I press the Fn key?</h3>
+                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a2”>Please check: 1. Go to “System Settings -> Privacy & Security -> Accessibility / Microphone” and ensure Comma is checked. 2. Ensure your Mac uses Apple Silicon. 3. Check if other apps are occupying the Fn key.</p>
                 </div>
-                <div class="faq-item" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3. 会有 iOS 或 Windows 版本吗？/ Will there be an iOS or Windows version?</h3>
-                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
-                        <strong>中文</strong>：现阶段我们集中精力打磨 Mac 桌面端的极致生产力体验。移动端（iOS）已在规划路线图中，桌面端体验达标后即会推进。<br>
-                        <strong>English</strong>：We are currently focused on perfecting the desktop productivity experience on Mac. The mobile version (iOS) is clearly on our roadmap and will follow once the desktop experience meets our standards.
-                    </p>
+                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
+                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q3”>3. Will there be an iOS or Windows version?</h3>
+                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a3”>We are currently focused on perfecting the desktop productivity experience on Mac. The mobile version (iOS) is clearly on our roadmap and will follow once the desktop experience meets our standards.</p>
                 </div>
-                <div class="faq-item" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">4. 为什么有时候识别的内容会重复出现两次？/ Why does the recognized text sometimes duplicate?</h3>
-                    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
-                        <strong>中文</strong>：Comma 支持极速流式输出（边听边上屏）。在极少数网络抖动的情况下，屏幕上的“临时流式结果”与“最终确认结果”可能会发生短时的渲染重叠。底层的对齐逻辑正在持续优化中。<br>
-                        <strong>English</strong>：Comma's speech engine streams text in real-time. In rare cases of network jitter, the "temporary streaming result" and the "final confirmed result" might briefly overlap. We are actively optimizing the alignment logic to prevent this.
-                    </p>
+                <div class=”faq-item” style=”margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;”>
+                    <h3 style=”font-size: 1.2rem; margin-bottom: 0.5rem;” data-i18n=”faq_q4”>4. Why does the recognized text sometimes duplicate?</h3>
+                    <p style=”color: var(--gray-text); font-size: 1rem; line-height: 1.6;” data-i18n=”faq_a4”>Comma's speech engine streams text in real-time. In rare cases of network jitter, the “temporary streaming result” and the “final confirmed result” might briefly overlap. We are actively optimizing the alignment logic to prevent this.</p>
                 </div>
             </div>
         </div>
