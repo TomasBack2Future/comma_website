@@ -11,11 +11,13 @@
         transition-duration: 0.01ms !important;
     }
     .reveal, .reveal-scale, .stagger > *,
-    .method-word, .anim-hidden {
+    .method-word, .anim-hidden,
+    .section-problem .statement {
         opacity: 1 !important;
         transform: none !important;
     }
     .marquee-track { animation: none !important; }
+    .features-track { flex-wrap: wrap !important; width: auto !important; }
 }
 
 /* ─── Design Tokens ─── */
@@ -257,9 +259,13 @@ h3 { font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 500;
 
 /* ─── Problem Section ─── */
 .section-problem .problem-statements { display: flex; flex-direction: column; gap: calc(var(--grid) * 6); }
+/* Default: fully visible. JS sets to 0.15 for scrub animation */
 .section-problem .statement {
     font-family: var(--font-sans); font-size: var(--type-h1); font-weight: 800;
-    letter-spacing: -0.03em; line-height: 1.05; color: var(--white); opacity: 0.15;
+    letter-spacing: -0.03em; line-height: 1.05; color: var(--white); opacity: 1;
+}
+body.js-loaded .section-problem .statement {
+    opacity: 0.15;
 }
 
 /* ─── Method Section ─── */
@@ -289,10 +295,16 @@ h3 { font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 500;
 }
 .feature-counter .current { color: var(--white); }
 
+/* No-JS fallback: wrap cards so they're all visible */
 .features-track {
     display: flex; gap: calc(var(--grid) * 3);
     padding: calc(var(--grid) * 8) calc(var(--grid) * 5);
     width: max-content;
+    flex-wrap: wrap;
+}
+/* JS enables horizontal scroll by removing wrap */
+body.js-loaded .features-track {
+    flex-wrap: nowrap;
 }
 .feature-card {
     width: 380px; flex-shrink: 0; border: 1px solid transparent;
@@ -504,5 +516,7 @@ footer .copyright { font-family: var(--font-mono); font-size: var(--type-mono-sm
     nav .links { gap: calc(var(--grid) * 2); }
     footer .container { flex-direction: column; gap: calc(var(--grid) * 3); text-align: center; }
     .shortcut-keys { min-width: 80px; }
+    .hero-headline { font-size: clamp(2rem, 8vw, 2.5rem); }
     .section-problem .statement { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+    .section-install h2 { font-size: clamp(2rem, 8vw, 2.5rem); }
 }
