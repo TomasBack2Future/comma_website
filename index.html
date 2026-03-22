@@ -64,7 +64,9 @@
         <div class="hero-content" style="position:relative; z-index:1;">
             <div class="container">
                 <p class="hero-label anim-hidden">Scientific Typing™</p>
-                <h1 class="hero-headline anim-hidden" data-i18n="hero_title">Voice as a Keyboard,</h1>
+                <h1 class="hero-headline anim-hidden">
+                    <span class="hero-typed" id="heroTyped"></span><span class="hero-cursor"></span>
+                </h1>
                 <p class="hero-sub anim-hidden" data-i18n="hero_sub">Hold, Speak, Done</p>
             </div>
         </div>
@@ -609,15 +611,6 @@
         };
 
         let currentLang = localStorage.getItem('comma_lang') || 'en';
-        let splitInstance = null;
-
-        function reSplitHeadline() {
-            const headline = document.querySelector('.hero-headline');
-            if (!headline || typeof SplitType === 'undefined') return;
-            if (splitInstance) splitInstance.revert();
-            splitInstance = new SplitType(headline, { types: 'chars' });
-            return splitInstance;
-        }
 
         function setLang(lang) {
             currentLang = lang;
@@ -631,8 +624,14 @@
                 el.style.display = el.getAttribute('data-lang') === lang ? 'inline' : 'none';
             });
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-            // Re-split headline for SplitType after text change
-            reSplitHeadline();
+            // Reset typewriter for new language
+            clearTimeout(typeTimeout);
+            heroLines = lang === 'zh'
+                ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
+                : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
+            lineIdx = 0; charIdx = 0; erasing = false;
+            if (heroTypedEl) heroTypedEl.textContent = '';
+            typeTimeout = setTimeout(tick, 200);
             // Refresh ScrollTrigger calculations after layout change
             if (typeof ScrollTrigger !== 'undefined') {
                 ScrollTrigger.refresh();
@@ -686,6 +685,39 @@
                 card.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
             });
         });
+
+        // ═══════════════════════════════════════════════════
+        // HERO TYPEWRITER (top-level so setLang can access)
+        // ═══════════════════════════════════════════════════
+        const heroTypedEl = document.getElementById('heroTyped');
+        let heroLines = currentLang === 'zh'
+            ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
+            : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
+        let lineIdx = 0, charIdx = 0, erasing = false;
+        let typeTimeout;
+
+        function tick() {
+            const text = heroLines[lineIdx];
+            if (!erasing) {
+                if (charIdx <= text.length) {
+                    heroTypedEl.textContent = text.slice(0, charIdx);
+                    charIdx++;
+                    typeTimeout = setTimeout(tick, 55 + Math.random() * 35);
+                } else {
+                    typeTimeout = setTimeout(() => { erasing = true; tick(); }, 1800);
+                }
+            } else {
+                if (charIdx > 0) {
+                    charIdx--;
+                    heroTypedEl.textContent = text.slice(0, charIdx);
+                    typeTimeout = setTimeout(tick, 30);
+                } else {
+                    erasing = false;
+                    lineIdx = (lineIdx + 1) % heroLines.length;
+                    typeTimeout = setTimeout(tick, 400);
+                }
+            }
+        }
 
         // ═══════════════════════════════════════════════════
         // GSAP + LENIS + SCROLLTRIGGER
@@ -744,16 +776,14 @@
                 });
             }
 
-            // ─── Hero Animation Timeline ───
-            const heroHeadline = document.querySelector('.hero-headline');
+            // ─── Hero Animation + Typewriter Start ───
             const heroLabel = document.querySelector('.hero-label');
             const heroSub = document.querySelector('.hero-sub');
             const scrollHint = document.querySelector('.scroll-hint');
             const heroContent = document.querySelector('.hero-content');
 
-            if (heroHeadline && typeof SplitType !== 'undefined') {
-                splitInstance = new SplitType(heroHeadline, { types: 'chars' });
-
+            // Hero entry animation with GSAP then start typewriter
+            if (typeof gsap !== 'undefined') {
                 const heroTl = gsap.timeline({ delay: 0.3 });
 
                 if (heroLabel) {
@@ -763,13 +793,13 @@
                     );
                 }
 
-                if (splitInstance.chars && splitInstance.chars.length) {
-                    heroTl.fromTo(splitInstance.chars,
-                        { yPercent: 100, opacity: 0 },
-                        { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.03, ease: 'power3.out' },
-                        '-=0.4'
-                    );
-                }
+                // Fade in the headline container, then start typewriter
+                heroTl.fromTo('.hero-headline',
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+                      onComplete: () => { typeTimeout = setTimeout(tick, 200); }
+                    }, '-=0.4'
+                );
 
                 if (heroSub) {
                     heroTl.fromTo(heroSub,
@@ -791,6 +821,9 @@
                         '-=0.6'
                     );
                 }
+            } else {
+                // Fallback: start typewriter immediately without GSAP
+                typeTimeout = setTimeout(tick, 400);
             }
 
             // Hero parallax on scroll
