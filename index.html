@@ -64,7 +64,7 @@
         <div class="hero-content" style="position:relative; z-index:1;">
             <div class="container">
                 <p class="hero-label anim-hidden">Scientific Typing™</p>
-                <h1 class="hero-headline anim-hidden">
+                <h1 class="hero-headline anim-hidden" id="heroHeadline">
                     <span class="hero-typed" id="heroTyped"></span><span class="hero-cursor"></span>
                 </h1>
                 <p class="hero-sub anim-hidden" data-i18n="hero_sub">Hold, Speak, Done</p>
@@ -626,11 +626,9 @@
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
             // Reset typewriter for new language
             clearTimeout(typeTimeout);
-            heroLines = lang === 'zh'
-                ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
-                : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
-            lineIdx = 0; charIdx = 0; erasing = false;
-            if (heroTypedEl) heroTypedEl.textContent = '';
+            heroLines = makeLines(lang);
+            lineIdx = 0; wordIdx = 0;
+            if (heroTypedEl) heroTypedEl.innerHTML = '';
             typeTimeout = setTimeout(tick, 200);
             // Refresh ScrollTrigger calculations after layout change
             if (typeof ScrollTrigger !== 'undefined') {
@@ -690,31 +688,89 @@
         // HERO TYPEWRITER (top-level so setLang can access)
         // ═══════════════════════════════════════════════════
         const heroTypedEl = document.getElementById('heroTyped');
-        let heroLines = currentLang === 'zh'
-            ? ['语音即键盘，', 'AI 构建者的新界面，', '不打字，只说话，', 'Comma，']
-            : ["Voice as a Keyboard,", "AI Builders' new interface,", "Don't type, Just speak,", "Comma,"];
-        let lineIdx = 0, charIdx = 0, erasing = false;
+
+        // Word-by-word typewriter with emphasis on key words
+        // Each line is an array of {text, emphasis, pause} objects
+        function makeLines(lang) {
+            if (lang === 'zh') return [
+                [
+                    {text: '语音', em: true, pause: 350},
+                    {text: '即', em: false, pause: 200},
+                    {text: '键盘，', em: true, pause: 0}
+                ],
+                [
+                    {text: 'AI', em: true, pause: 300},
+                    {text: '构建者的', em: false, pause: 250},
+                    {text: '新界面，', em: true, pause: 0}
+                ],
+                [
+                    {text: '无需', em: false, pause: 300},
+                    {text: '打字', em: true, pause: 350},
+                    {text: '的', em: false, pause: 200},
+                    {text: '打字，', em: true, pause: 0}
+                ],
+                [
+                    {text: 'Comma，', em: true, pause: 0}
+                ]
+            ];
+            return [
+                [
+                    {text: 'Voice', em: true, pause: 350},
+                    {text: 'as a', em: false, pause: 250},
+                    {text: 'Keyboard,', em: true, pause: 0}
+                ],
+                [
+                    {text: 'AI', em: true, pause: 300},
+                    {text: "Builders'", em: false, pause: 250},
+                    {text: 'new', em: false, pause: 250},
+                    {text: 'interface,', em: true, pause: 0}
+                ],
+                [
+                    {text: 'Type', em: true, pause: 400},
+                    {text: 'Without', em: false, pause: 350},
+                    {text: 'Typing,', em: true, pause: 0}
+                ],
+                [
+                    {text: 'Comma,', em: true, pause: 0}
+                ]
+            ];
+        }
+
+        let heroLines = makeLines(currentLang);
+        let lineIdx = 0, wordIdx = 0;
         let typeTimeout;
+        const WORD_BASE_DELAY = 280;  // base delay between words (subtitle rhythm)
+        const LINE_HOLD = 2200;       // hold completed line before clearing
+        const CLEAR_PAUSE = 500;      // pause after clearing before next line
 
         function tick() {
-            const text = heroLines[lineIdx];
-            if (!erasing) {
-                if (charIdx <= text.length) {
-                    heroTypedEl.textContent = text.slice(0, charIdx);
-                    charIdx++;
-                    typeTimeout = setTimeout(tick, 55 + Math.random() * 35);
-                } else {
-                    typeTimeout = setTimeout(() => { erasing = true; tick(); }, 1800);
+            const line = heroLines[lineIdx];
+            if (wordIdx <= line.length) {
+                // Build HTML with words so far
+                let html = '';
+                for (let i = 0; i < wordIdx; i++) {
+                    const w = line[i];
+                    if (w.em) {
+                        html += '<span class="hero-word hero-word-em">' + w.text + '</span> ';
+                    } else {
+                        html += '<span class="hero-word">' + w.text + '</span> ';
+                    }
                 }
-            } else {
-                if (charIdx > 0) {
-                    charIdx--;
-                    heroTypedEl.textContent = text.slice(0, charIdx);
-                    typeTimeout = setTimeout(tick, 30);
+                heroTypedEl.innerHTML = html.trim();
+
+                if (wordIdx < line.length) {
+                    // Next word: use the PREVIOUS word's pause, or base delay
+                    const delay = wordIdx > 0 ? (line[wordIdx - 1].pause || WORD_BASE_DELAY) : WORD_BASE_DELAY;
+                    wordIdx++;
+                    typeTimeout = setTimeout(tick, delay);
                 } else {
-                    erasing = false;
-                    lineIdx = (lineIdx + 1) % heroLines.length;
-                    typeTimeout = setTimeout(tick, 400);
+                    // Line complete — hold, then clear and advance
+                    typeTimeout = setTimeout(() => {
+                        heroTypedEl.innerHTML = '';
+                        lineIdx = (lineIdx + 1) % heroLines.length;
+                        wordIdx = 0;
+                        typeTimeout = setTimeout(tick, CLEAR_PAUSE);
+                    }, LINE_HOLD);
                 }
             }
         }
