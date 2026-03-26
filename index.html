@@ -281,11 +281,11 @@
             <h2 class="mt-4" data-i18n="install_title">Type without typing.</h2>
             <p class="subtitle" data-i18n="install_sub">macOS 12.0+ required</p>
             <div class="install-steps mt-6">
-                <div class="install-step"><span class="step-num">1</span><span data-i18n="step_1">Download the latest .dmg installer</span></div>
+                <div class="install-step"><span class="step-num">1</span><span data-i18n="step_1">Download the .dmg installer</span></div>
                 <div class="install-step"><span class="step-num">2</span><span data-i18n="step_2">Drag Comma.app into Applications</span></div>
                 <div class="install-step"><span class="step-num">3</span><span data-i18n="step_3">Launch — the onboarding guide walks you through</span></div>
             </div>
-            <a href="https://comma.agoralab.co/downloads/Comma-latest.dmg" target="_blank" rel="noopener" class="btn btn-filled mt-6" data-magnetic><span data-i18n="download_btn">Download for macOS</span></a>
+            <a href="https://comma.agoralab.co/downloads/Comma.dmg" target="_blank" rel="noopener" class="btn btn-filled mt-6" data-magnetic><span data-i18n="download_btn">Download for macOS</span></a>
         </div>
     </section>
 
@@ -530,7 +530,7 @@
                 install_label: 'Get Started',
                 install_title: 'Type without typing.',
                 install_sub: 'macOS 12.0+ required',
-                step_1: 'Download the latest .dmg installer',
+                step_1: 'Download the .dmg installer',
                 step_2: 'Drag Comma.app into Applications',
                 step_3: 'Launch — the onboarding guide walks you through',
                 download_btn: 'Download for macOS',
@@ -594,7 +594,7 @@
                 install_label: '立即开始',
                 install_title: '不打字，也能打字。',
                 install_sub: '需要 macOS 12.0 或更高版本',
-                step_1: '下载最新的 .dmg 安装包',
+                step_1: '下载 .dmg 安装包',
                 step_2: '将 Comma.app 拖入「应用程序」文件夹',
                 step_3: '启动应用 — 引导程序会带你完成设置',
                 download_btn: '下载 macOS 版本',
@@ -739,14 +739,56 @@
         let heroLines = makeLines(currentLang);
         let lineIdx = 0, wordIdx = 0;
         let typeTimeout;
-        const WORD_BASE_DELAY = 280;  // base delay between words (subtitle rhythm)
-        const LINE_HOLD = 2200;       // hold completed line before clearing
-        const CLEAR_PAUSE = 500;      // pause after clearing before next line
+        const WORD_BASE_DELAY = 280;
+        const LINE_HOLD = 2200;
+        const CLEAR_PAUSE = 500;
+
+        // Special ceremony for the last line (Comma) — letter by letter with glow
+        function tickCeremony() {
+            const line = heroLines[lineIdx];
+            const fullText = line[0].text.replace(/[,，]$/, ''); // "Comma" without comma
+            const suffix = line[0].text.slice(fullText.length);  // the trailing comma
+            const LETTER_DELAY = 180;
+            let letterIdx = 0;
+
+            function nextLetter() {
+                letterIdx++;
+                let html = '';
+                for (let i = 0; i < letterIdx && i < fullText.length; i++) {
+                    const isLatest = (i === letterIdx - 1);
+                    html += '<span class="hero-letter' + (isLatest ? ' hero-letter-glow' : '') + '">' + fullText[i] + '</span>';
+                }
+                heroTypedEl.innerHTML = html;
+
+                if (letterIdx < fullText.length) {
+                    typeTimeout = setTimeout(nextLetter, LETTER_DELAY + Math.random() * 80);
+                } else {
+                    // All letters in — add suffix, then dramatic hold, then pulse glow on whole word
+                    typeTimeout = setTimeout(() => {
+                        heroTypedEl.innerHTML = '<span class="hero-ceremony">' + fullText + suffix + '</span>';
+                        // Long hold for Comma — let it breathe
+                        typeTimeout = setTimeout(() => {
+                            heroTypedEl.innerHTML = '';
+                            lineIdx = (lineIdx + 1) % heroLines.length;
+                            wordIdx = 0;
+                            typeTimeout = setTimeout(tick, CLEAR_PAUSE + 200);
+                        }, 3000);
+                    }, 400);
+                }
+            }
+            nextLetter();
+        }
 
         function tick() {
             const line = heroLines[lineIdx];
+            // Check if this is the ceremony line (last line — "Comma")
+            const isCeremony = (lineIdx === heroLines.length - 1);
+            if (isCeremony) {
+                tickCeremony();
+                return;
+            }
+
             if (wordIdx <= line.length) {
-                // Build HTML with words so far
                 let html = '';
                 for (let i = 0; i < wordIdx; i++) {
                     const w = line[i];
@@ -759,12 +801,10 @@
                 heroTypedEl.innerHTML = html.trim();
 
                 if (wordIdx < line.length) {
-                    // Next word: use the PREVIOUS word's pause, or base delay
                     const delay = wordIdx > 0 ? (line[wordIdx - 1].pause || WORD_BASE_DELAY) : WORD_BASE_DELAY;
                     wordIdx++;
                     typeTimeout = setTimeout(tick, delay);
                 } else {
-                    // Line complete — hold, then clear and advance
                     typeTimeout = setTimeout(() => {
                         heroTypedEl.innerHTML = '';
                         lineIdx = (lineIdx + 1) % heroLines.length;
