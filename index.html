@@ -748,25 +748,42 @@
             const line = heroLines[lineIdx];
             const fullText = line[0].text.replace(/[,，]$/, ''); // "Comma" without comma
             const suffix = line[0].text.slice(fullText.length);  // the trailing comma
-            const LETTER_DELAY = 180;
+            const LETTER_DELAY = 200;
             let letterIdx = 0;
+
+            // Find which letter is the "o" (index 1 in "Comma", index 1 in "Comma")
+            const ringLetterIdx = fullText.toLowerCase().indexOf('o');
 
             function nextLetter() {
                 letterIdx++;
                 let html = '';
                 for (let i = 0; i < letterIdx && i < fullText.length; i++) {
                     const isLatest = (i === letterIdx - 1);
-                    html += '<span class="hero-letter' + (isLatest ? ' hero-letter-glow' : '') + '">' + fullText[i] + '</span>';
+                    const isRing = (i === ringLetterIdx);
+                    let cls = 'hero-letter';
+                    if (isRing) cls += ' hero-letter-ring';
+                    else if (isLatest) cls += ' hero-letter-glow';
+                    html += '<span class="' + cls + '">' + fullText[i] + '</span>';
                 }
                 heroTypedEl.innerHTML = html;
 
                 if (letterIdx < fullText.length) {
-                    typeTimeout = setTimeout(nextLetter, LETTER_DELAY + Math.random() * 80);
+                    // Slow down slightly on the "o" reveal for emphasis
+                    const extraDelay = (letterIdx === ringLetterIdx + 1) ? 120 : 0;
+                    typeTimeout = setTimeout(nextLetter, LETTER_DELAY + Math.random() * 80 + extraDelay);
                 } else {
-                    // All letters in — add suffix, then dramatic hold, then pulse glow on whole word
+                    // All letters in — assemble final with ring "o" preserved
                     typeTimeout = setTimeout(() => {
-                        heroTypedEl.innerHTML = '<span class="hero-ceremony">' + fullText + suffix + '</span>';
-                        // Long hold for Comma — let it breathe
+                        let finalHtml = '';
+                        for (let i = 0; i < fullText.length; i++) {
+                            if (i === ringLetterIdx) {
+                                finalHtml += '<span class="ceremony-ring">' + fullText[i] + '</span>';
+                            } else {
+                                finalHtml += fullText[i];
+                            }
+                        }
+                        heroTypedEl.innerHTML = '<span class="hero-ceremony">' + finalHtml + suffix + '</span>';
+                        // Long hold for Comma
                         typeTimeout = setTimeout(() => {
                             heroTypedEl.innerHTML = '';
                             lineIdx = (lineIdx + 1) % heroLines.length;
