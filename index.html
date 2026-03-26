@@ -629,7 +629,11 @@
             heroLines = makeLines(lang);
             lineIdx = 0; wordIdx = 0;
             if (heroTypedEl) heroTypedEl.innerHTML = '';
-            typeTimeout = setTimeout(tick, 200);
+            // Only restart tick if typewriter has already been started
+            // (GSAP onComplete handles the initial start; this handles lang switches)
+            if (typewriterStarted) {
+                typeTimeout = setTimeout(tick, 200);
+            }
             // Refresh ScrollTrigger calculations after layout change
             if (typeof ScrollTrigger !== 'undefined') {
                 ScrollTrigger.refresh();
@@ -739,6 +743,7 @@
         let heroLines = makeLines(currentLang);
         let lineIdx = 0, wordIdx = 0;
         let typeTimeout;
+        let typewriterStarted = false;
         const WORD_BASE_DELAY = 280;
         const LINE_HOLD = 2200;
         const CLEAR_PAUSE = 500;
@@ -805,22 +810,13 @@
                 return;
             }
 
-            if (wordIdx <= line.length) {
-                let html = '';
-                for (let i = 0; i < wordIdx; i++) {
-                    const w = line[i];
-                    if (w.em) {
-                        html += '<span class="hero-word hero-word-em">' + w.text + '</span> ';
-                    } else {
-                        html += '<span class="hero-word">' + w.text + '</span> ';
-                    }
-                }
-                heroTypedEl.innerHTML = html.trim();
-
-                if (wordIdx < line.length) {
-                    const delay = wordIdx > 0 ? (line[wordIdx - 1].pause || WORD_BASE_DELAY) : WORD_BASE_DELAY;
-                    wordIdx++;
-                    typeTimeout = setTimeout(tick, delay);
+            // First call for a new line: wordIdx is 0, start showing first word
+            if (wordIdx === 0) {
+                wordIdx = 1;
+                const w = line[0];
+                heroTypedEl.innerHTML = '<span class="hero-word' + (w.em ? ' hero-word-em' : '') + '">' + w.text + '</span>';
+                if (line.length > 1) {
+                    typeTimeout = setTimeout(tick, w.pause || WORD_BASE_DELAY);
                 } else {
                     typeTimeout = setTimeout(() => {
                         heroTypedEl.innerHTML = '';
@@ -829,6 +825,28 @@
                         typeTimeout = setTimeout(tick, CLEAR_PAUSE);
                     }, LINE_HOLD);
                 }
+                return;
+            }
+
+            // Subsequent words
+            if (wordIdx < line.length) {
+                let html = '';
+                for (let i = 0; i <= wordIdx; i++) {
+                    const w = line[i];
+                    html += '<span class="hero-word' + (w.em ? ' hero-word-em' : '') + '">' + w.text + '</span> ';
+                }
+                heroTypedEl.innerHTML = html.trim();
+                const delay = line[wordIdx].pause || WORD_BASE_DELAY;
+                wordIdx++;
+                typeTimeout = setTimeout(tick, delay);
+            } else {
+                // All words shown — hold, then advance
+                typeTimeout = setTimeout(() => {
+                    heroTypedEl.innerHTML = '';
+                    lineIdx = (lineIdx + 1) % heroLines.length;
+                    wordIdx = 0;
+                    typeTimeout = setTimeout(tick, CLEAR_PAUSE);
+                }, LINE_HOLD);
             }
         }
 
@@ -910,7 +928,7 @@
                 heroTl.fromTo('.hero-headline',
                     { opacity: 0, y: 30 },
                     { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-                      onComplete: () => { typeTimeout = setTimeout(tick, 200); }
+                      onComplete: () => { typewriterStarted = true; typeTimeout = setTimeout(tick, 200); }
                     }, '-=0.4'
                 );
 
@@ -936,6 +954,7 @@
                 }
             } else {
                 // Fallback: start typewriter immediately without GSAP
+                typewriterStarted = true;
                 typeTimeout = setTimeout(tick, 400);
             }
 
