@@ -262,26 +262,18 @@ h3 { font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 500;
 .hero-letter-glow {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.2);
 }
-/* The "o" in Comma — replaced with actual ring image from logo */
+/* The "o" in Comma — ring image as background, inline flow preserved */
 .hero-letter-ring {
     display: inline-block;
-    position: relative;
-    color: transparent;
-    animation: letterReveal 0.6s ease-out both;
-}
-.hero-letter-ring img {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    height: 1.05em;
-    width: 1.05em;
-    object-fit: contain;
-    pointer-events: none;
-    animation: ringGlow 2.5s ease-in-out infinite alternate;
+    background: url('ring-o.png') center/contain no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: letterReveal 0.6s ease-out both, ringGlow 2.5s ease-in-out infinite alternate;
 }
 @keyframes ringGlow {
-    from { filter: brightness(1.1) drop-shadow(0 0 8px rgba(200, 80, 192, 0.3)); }
-    to { filter: brightness(1.4) drop-shadow(0 0 24px rgba(200, 80, 192, 0.5)); }
+    from { filter: brightness(1.2) drop-shadow(0 0 6px rgba(200, 80, 192, 0.25)); }
+    to { filter: brightness(1.5) drop-shadow(0 0 20px rgba(200, 80, 192, 0.45)); }
 }
 .hero-ceremony {
     display: inline-block;
@@ -289,19 +281,13 @@ h3 { font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 500;
     font-weight: 900;
     animation: ceremonyPulse 2s ease-in-out;
 }
-/* Ceremony "o" — image version */
+/* Ceremony "o" — same ring background */
 .hero-ceremony .ceremony-ring {
     display: inline-block;
-    position: relative;
-    color: transparent;
-}
-.hero-ceremony .ceremony-ring img {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    height: 1.05em; width: 1.05em;
-    object-fit: contain;
-    pointer-events: none;
+    background: url('ring-o.png') center/contain no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     animation: ringGlow 2.5s ease-in-out infinite alternate;
 }
 @keyframes letterReveal {
