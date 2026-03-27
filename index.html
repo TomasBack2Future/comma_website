@@ -768,7 +768,11 @@
                     let cls = 'hero-letter';
                     if (isRing) cls += ' hero-letter-ring';
                     else if (isLatest) cls += ' hero-letter-glow';
-                    html += '<span class="' + cls + '">' + fullText[i] + '</span>';
+                    if (isRing) {
+                        html += '<span class="' + cls + '">' + fullText[i] + '<img src="ring-o.png" alt=""></span>';
+                    } else {
+                        html += '<span class="' + cls + '">' + fullText[i] + '</span>';
+                    }
                 }
                 heroTypedEl.innerHTML = html;
 
@@ -782,7 +786,7 @@
                         let finalHtml = '';
                         for (let i = 0; i < fullText.length; i++) {
                             if (i === ringLetterIdx) {
-                                finalHtml += '<span class="ceremony-ring">' + fullText[i] + '</span>';
+                                finalHtml += '<span class="ceremony-ring">' + fullText[i] + '<img src="ring-o.png" alt=""></span>';
                             } else {
                                 finalHtml += fullText[i];
                             }
